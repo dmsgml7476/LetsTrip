@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      
+<div th:fragment="footer" id="footer">
+<div class="footer-wrap">
+	<div class="footer-title"><span class="blue">Let</span><span class="green">'</span><span class="blue">s</span> <span class="green">T</span><span class="blue">rip</span> 을&nbsp&nbsp <span class="sns">SNS</span>에서 만나보세요!</div>
+
+      <div class="footer-sns">
+        <div class="sns-box">
+          <a href="https://twitter.com">
+            <img src="/image/twitter.png" alt="트위터" />
+          </a>
+        </div>
+        <div class="sns-box">
+          <a href="https://instagram.com">
+            <img src="/image/instagram.png" alt="인스타그램" />
+          </a>
+        </div>
+        <div class="sns-box">
+          <a href="https://www.facebook.com">
+            <img src="/image/facebook.png" alt="페이스북" />
+          </a>
+        </div>
+      </div>
+      <div class="footer-link">
+        <div class="text">개인정보처리방침</div>
+        <div class="text">이용약관</div>
+        <div class="text">위치기반서비스</div>
+        <th:block th:if="${#authentication != null and #authentication.name != 'anonymousUser'}">
+        <div class="text"><a href="javascript:void(0)" onclick="openCustomerModal()"
+            >고객센터</a
+          ></div>
+        </th:block>
+        
+        <th:block th:unless="${#authentication != null and #authentication.name != 'anonymousUser'}">
+  			<div class="text">
+   				<a href="/login">고객센터</a>
+			</div>
+		</th:block>
+      </div>
+    	<th:block th:if="${#authentication != null and #authentication.name != 'anonymousUser'}">
+      <div id="openCustomerModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" onclick="closeCustomerModal()">&times;</span>
+            <h2>고객 문의</h2>
+            <div></div>
+          </div>
+          <form method="post" th:action="@{/customer}" th:object="${customerServiceDto}">
+            <div class="select-box">
+              <select
+                id="csOption"
+                name="csOption"
+                class="select-drop"
+                required
+              >
+                <option value="">문의유형</option>
+                <option value="COMPLAIN">불편사항</option>
+                <option value="ETC">기타</option>
+              </select>
+              <select
+                id="category"
+                name="category"
+                class="select-drop"
+                required
+              >
+                <option value="">카테고리</option>
+                <option value="TRAVEL">여행플래너</option>
+                <option value="STORY">스토리</option>
+                <option value="ETC">기타</option>
+              </select>
+            </div>
+            <div class="content-box">
+              <label for="questionText">문의 내용</label>
+              <button type="submit">보내기</button>
+            </div>
+            <textarea
+              id="questionText"
+              class="cs-content"
+              name="questionText"
+              rows="5"
+              required
+            ></textarea>
+          </form>
+        </div>
+      </div>
+      </th:block>
+    </div>
+</div>
+</html>

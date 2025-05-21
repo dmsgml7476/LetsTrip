@@ -1,0 +1,151 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+}
+
+a {
+  color: gray;
+  text-decoration: none;
+}
+
+a:visited {
+  color: gray;
+}
+
+.wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #cfe9ff; 
+}
+
+.wrap-box {
+  width: 900px;
+  background-color: white;
+  border-radius: 30px;
+  margin: 20px 0;
+  height: 700px;
+  display: flex;
+  align-items: stretch;
+}
+
+.category {
+  width: 200px;
+  border-right: 4px solid lightgray;
+  padding: 20px;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-ul {
+  display: flex;
+  width: 100px;
+  height: 660px;
+
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: space-between;
+}
+
+.mgmt-content {
+  margin: 110px 70px;
+}
+
+.mgmt-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.mgmt-title {
+  font-size: 40px;
+}
+
+/* 등록폼 */
+
+form {
+  /* border: 1px solid red; */
+  margin-top: 60px;
+  width: 560px;
+}
+
+.mgmt-op-box {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.place-op-box {
+  display: flex;
+}
+
+.place-op-box > div > select {
+  height: 35px;
+  width: 90px;
+  margin-right: 10px;
+}
+
+.place-save-btn {
+  width: 90px;
+  background-color: rgb(2, 204, 2);
+  border: none;
+  border-radius: 4px;
+  color: white;
+}
+
+.input-area {
+  margin-top: 10px;
+  display: flex;
+  height: 35px;
+}
+
+.address-input-box {
+  display: flex;
+  width: 100%;
+  border: 1px solid salmon;
+}
+
+.input-name {
+  width: 50px;
+  border: 1px solid black;
+  border-right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.address-input {
+  border: 1px solid black;
+  border-radius: 0;
+  width: 100%;
+}
+
+.input-area > button {
+  width: 90px;
+  margin-left: 10px;
+}
+
+/* 정보 입력 창 */
+
+.input-box {
+  display: flex;
+  width: 100%;
+}
+
+.input-tel-name {
+  width: 110px;
+  border: 1px solid black;
+  border-right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tel-input-box {
+  margin-left: 10px;
+}

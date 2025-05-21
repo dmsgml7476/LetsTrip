@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/layout/default}">
+<head>
+	<th:block layout:fragment="css">
+		<link rel="stylesheet" href="/admin/css/placeSave.css">
+	</th:block>
+
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+
+<body>
+
+<div layout:fragment="main" id="main">
+	<div class="wrap">
+      <div class="wrap-box">
+        <div class="category">
+          <ul class="category-ul">
+            <div class="category-a-box">
+              <a
+                class="category-link"
+                href="/admin/placeSave"
+                style="color: black; font-weight: bold"
+                >등록</a
+              >
+            </div>
+            <div class="category-a-box">
+              <a class="category-link" href="/admin/placeMgmt/tourSpot">관광지</a>
+            </div>
+            <div class="category-a-box">
+              <a class="category-link" href="/admin/placeMgmt/hotel">숙소</a>
+            </div>
+            <div class="category-a-box">
+              <a class="category-link" href="/admin/placeMgmt/tourSpot">식당</a>
+            </div>
+          </ul>
+        </div>
+
+        <!-- 여행 관리 메인 페이지 -->
+
+        <div class="mgmt-content">
+          <div class="mgmt-area">
+            <div class="mgmt-title">
+              <p>여행지 등록하기</p>
+            </div>
+            <form action="/admin/place/save" method="post" onsubmit="return prepareFullAddressBeforeSubmit();">
+              <div class="mgmt-op-box">
+                <div class="place-op-box">
+                  <div class="place-cate">
+                    <select name="categoryType" >
+                      <option value="">유형</option>
+                      <option value="1">관광지</option>
+                      <option value="2">숙소</option>
+                      <option value="3">식당</option>
+                    </select>
+                  </div>
+                  
+                   <div class="place-region">
+                    <select id="upperRegionSelect">
+                      <option value="">상위 지역</option>
+                      <th:block th:each="region : ${regionList}">
+                        <option
+                          th:value="${region.upperRegion}"
+                          th:text="${region.upperRegion}"
+                        ></option>
+                      </th:block>
+                    </select>
+                  </div>
+                  
+                  <div class="place-region">
+                    <select id="subRegionSelect" name="regionId">
+                      <option value="">세부 지역</option>
+                      <th:block th:each="region : ${regionList}">
+						<option th:value="${region.regionName}" th:text="${region.regionName}"></option>
+                      </th:block>
+                    </select>
+                  </div>
+                </div>
+
+                <button class="place-save-btn" type="submit">등록하기</button>
+              </div>
+              <!-- 주소 입력 -->
+              <div class="input-area">
+                <div class="input-box address-input-box">
+                  <div class="input-name">주소</div>
+                  <input class="address-input" type="text" id="sample6_address"
+                  />
+                </div>
+
+                <input
+              type="button"
+              onclick="sample6_execDaumPostcode()"
+              value="주소 찾기"
+            /><br />
+              </div>
+              
+              <div class="input-area">
+              	<div class="detail-address-name" style="border: 1px solid; width:95px; border-right: 0; display: flex; align-items: center; justify-content: center; padding: 5px;">상세 주소</div>
+              	<input type="text" id="sample6_detailAddress" name="detailAddress" style="width: 100%;" />
+              </div>
+              <input type="hidden" id="hiddenUpperRegion" name="upperRegion" />
+              <input type="hidden" id="fullAddress" name="placeAddress" />
+              <input type="hidden" id="searchableAddress" name="searchableAddress" />
+
+              <!-- 정보 입력 -->
+
+              <div class="input-area">
+                <div class="input-box">
+                  <div class="input-name info-input-box">정보</div>
+                  <input class="address-input" name="placeInfo"/>
+                </div>
+              </div>
+
+              <div class="input-area">
+                <div class="input-box place-name-input-box">
+                  <div class="input-name">이름</div>
+                  <input class="address-input" name="placeName"/>
+                </div>
+
+                <div class="input-box tel-input-box">
+                  <div class="input-tel-name">전화번호</div>
+                  <input class="address-input" name="tel"/>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	window.regionList = /*[[${regionList}]]*/ [];
+	console.log("🟢 JS regionList 확인:", window.regionList);
+	</script>
+	
+	
+	
+	<script>
+/* 		function prepareFullAddressBeforeSubmit() {
+			const addr = document.getElementById('sample6_address').value;
+			const detail = document.getElementById('sample6_detailAddress').value;
+			document.getElementById('fullAddress').value = addr + ' ' + detail;
+
+			const selectedUpper = document.getElementById('upperRegionSelect').value;
+			document.getElementById('hiddenUpperRegion').value = selectedUpper;
+
+
+		} */
+		
+		function testSubmit() {
+			  const upper = document.getElementById('upperRegionSelect').value;
+			  const region = document.getElementById('subRegionSelect').value;
+
+			  alert("💬 제출 전 확인: upper=" + upper + ", region=" + region);
+			  return true; // 반드시 return true 해야 전송됨
+			}
+		
+		
+	</script>
+	
+	<script th:src="@{/admin/javascript/placeSave.js}"></script>
+</th:block>
+
+</body>
+</html>

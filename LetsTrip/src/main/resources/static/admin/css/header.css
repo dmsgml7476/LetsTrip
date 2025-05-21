@@ -1,0 +1,117 @@
+@charset "UTF-8";
+
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poetsen+One&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+
+.nav-box {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.side-area-wrap {
+  /* border: 1px solid salmon; */
+  width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.h-wrap {
+  /* border: 1px solid; */
+  height: 110px;
+  width: 1280px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.h-wrap > div {
+  margin: 40px;
+}
+
+.link-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link-ul {
+  /* border: 1px solid; */
+
+  height: 70px;
+  width: 650px;
+  display: flex;
+  justify-content: space-between;
+}
+
+a {
+  text-align: none;
+  text-decoration: none;
+  color: gray;
+}
+
+.a-box:hover a {
+  color: white;
+}
+
+.a-box {
+  padding: 10px 30px;
+  height: 60px;
+  border-radius: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.a-box:hover {
+  padding: 10px 30px;
+  height: 60px;
+  border-radius: 35px;
+  color: white;
+  background-color: #7bb857;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.line-div {
+  position: relative;
+  border: 1px #64a3db;
+  background-color: #64a3db;
+  width: 600px;
+  height: 5px;
+  border-radius: 10px;
+  overflow: visible;
+}
+
+.line-text {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #64a3db;
+  font-weight: bold;
+  opacity: 0;
+  transition: all 0.5s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+

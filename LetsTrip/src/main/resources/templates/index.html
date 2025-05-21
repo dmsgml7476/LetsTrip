@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/default}">
+<head>
+	<th:block layout:fragment="css"></th:block>
+	<link rel="stylesheet" th:href="@{./css/index.css}">
+
+</head>
+
+
+
+<div layout:fragment="main" id="main">
+  
+
+<div class="wrap">
+  	<div class="main-area">
+		<div class="background">
+			<img src="image/Letstripmain.png" style="width: 1280px"/>
+		</div>
+            
+		<div class="content">
+            <div class="content-header">
+              <img src="image/main2.png" />
+            </div>
+            
+            <div class="trip-area">
+              <img src="image/main3.png" />
+              <img src="image/main4.png" />
+              <div class="triptext">
+                그럼 당신이 원했던 여행 계획이 펼쳐집니다!
+              </div>
+        	</div>
+        	
+        	<div class="lets-area">
+              <div class="right-box"></div>
+              <img src="image/main5.png" />
+            </div>
+            
+            <div class="text-area">
+              <div class="recommend-text">추천 스토리</div>
+              <div class="recommend-line"></div>
+              <div class="sort-btn">
+                <button class="select-btn" data-category="like">공감순</button>
+                <button class="select-btn" data-category="season">계절</button>
+                <button class="select-btn" data-category="new-list">
+                  최신순
+                </button>
+              </div>
+            </div>
+            
+           	
+           	 <div class="story-recommend-wrapper">
+              <button id="arrowLeft" class="arrow">&#60;</button>
+
+              <div class="story-recommend-area">
+                <div
+                  class="story-track"
+                  id="storyTrack"
+                  th:data-total="${storyList.size()}"
+                >
+                  <div
+                    class="story-recommend-box"
+                    th:each="story : ${storyList}"
+                  >
+                  <a th:href="@{/StoryDetail(id=${story.storyId})}" style="text-decoration: none; color: inherit;">
+                    <div class="story-img">
+                      <img th:src="@{${story.imageUrl}}" />
+                    </div>
+                    <div class="story-info-box">
+                      <div
+                        class="story-writer"
+                        th:text="${story.nickname}"
+                      ></div>
+                      <div
+                        class="story-date"
+                        th:text="${#temporals.format(story.writeAt, 'yyyy.MM.dd')}"
+                      ></div>
+                      <div class="like-count-box">
+                      <img src="/image/heart.png"/>
+                      <div class="like-count" th:text="${story.likes}"></div>
+                      </div>
+                    </div>
+                    <div class="story-text" th:text="${story.storyTitle}"></div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <button id="arrowRight" class="arrow">&#62;</button>
+            </div>
+
+            <div class="lets-trip-link-area">
+              <a class="lets-link-box" href="/letsmain">
+                <p>스토리 보러가기</p>
+                <img src="image/lets.png" width="250px" height="210px" />
+              </a>
+              <a class="trip-link-box" href="/tripMain">
+                <p>여행일정 짜러가기</p>
+                <img src="image/trip.png" width="250px" height="210px" />
+              </a>
+            </div>
+		</div>
+		
+		
+		
+		
+  	</div>
+</div>
+  	
+  	
+  	
+  	
+</div>
+
+
+<th:block layout:fragment="script">
+  <script th:inline="javascript" defer>
+  window.addEventListener("DOMContentLoaded", () => {
+	  const track = document.getElementById("storyTrack");
+	  const totalItems = parseInt(track.dataset.total);
+	  const boxWidth = 550; // box 1개 너비 (px)
+	  const itemsPerPage = 2;
+	  const maxPage = Math.ceil(totalItems / itemsPerPage);
+	  let currentIndex = 0;
+
+	  const updateSlide = () => {
+		  const offset = boxWidth * itemsPerPage * currentIndex;
+		  track.style.transform = `translateX(-${offset}px)`;
+	  };
+
+	  document.getElementById("arrowRight").addEventListener("click", () => {
+	    currentIndex = (currentIndex + 1) % maxPage;
+	    updateSlide();
+	  });
+
+	  document.getElementById("arrowLeft").addEventListener("click", () => {
+	    currentIndex = (currentIndex - 1 + maxPage) % maxPage;
+	    updateSlide();
+	  });
+
+	  updateSlide();
+	  
+	  const buttons = document.querySelectorAll(".select-btn");
+      const items = document.querySelectorAll(".item");
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          // 버튼 선택 스타일 갱신
+          buttons.forEach((btn) => btn.classList.remove("selected"));
+          button.classList.add("selected");
+
+          const category = button.dataset.category;
+
+          // 항목 필터링
+          items.forEach((item) => {
+            if (category === "all" || item.dataset.category === category) {
+              item.style.display = "block";
+            } else {
+              item.style.display = "none";
+            }
+          });
+        });
+      });
+	});
+
+  
+  </script>
+</th:block>
+
+
+</html>

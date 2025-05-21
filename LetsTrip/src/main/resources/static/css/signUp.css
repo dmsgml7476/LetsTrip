@@ -1,0 +1,257 @@
+@charset "UTF-8";
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+}
+
+.signUp-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #cfe9ff;
+}
+
+.signUp-area {
+  width: 800px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+  padding: 20px;
+  border: none;
+  margin: 20px 0;
+}
+
+.signUp-area input {
+  height: 40px;
+  outline: 3px;
+  border: 2px solid rgb(170, 170, 170);
+  border-radius: 7px;
+  padding-left: 10px;
+  margin: 5px 0;
+  width: 250px;
+  background-color: rgb(247, 247, 247);
+}
+
+.signUp-area input:focus {
+  border: 4px solid #7bb857;
+  outline: #7bb857;
+  background-color: rgb(247, 247, 247);
+}
+
+.input-box > button {
+  border: none;
+  width: 80px;
+  height: 40px;
+  border-radius: 7px;
+  margin-left: 10px;
+  background-color: #9dcf7f;
+}
+
+.input-box > button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.input-box > button:active {
+  transform: scale(0.97);
+}
+
+.box-name {
+  margin: 10px 0;
+}
+
+.signUp-page-name {
+  margin: 30px 0;
+}
+
+.text-signUp {
+  font-size: 20px;
+  font-weight: normal;
+}
+
+.address-input-box {
+  display: flex;
+  align-items: center;
+}
+
+.find-address-btn {
+  border: none;
+  width: 80px;
+  height: 40px;
+  border-radius: 7px;
+  margin-left: 10px;
+  background-color: #9dcf7f;
+}
+
+.find-address-btn:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.find-address-btn:active {
+  transform: scale(0.97);
+}
+
+/* 해시태그 */
+
+.hashtag-edit-area {
+  border: 1px solid;
+  margin: 20px 0;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hashtag-edit-title {
+  font-size: 30px;
+}
+
+.hashtags-box {
+  width: 100%;
+  margin: 10px;
+}
+
+.mbti-edit-area {
+  display: flex;
+}
+
+.mbti-edit-title {
+  font-size: 30px;
+}
+
+.my-mbti-box {
+  margin-left: 15px;
+}
+
+/* 수정전 */
+
+.hashtag {
+  display: inline-block;
+  margin: 5px;
+  padding: 6px 12px;
+  background-color: #eee;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.hashtag:hover {
+  background-color: #ddd;
+}
+
+.hashtag.selected {
+  background-color: orange;
+  color: white;
+  font-weight: bold;
+}
+
+.mbti-hidden {
+  display: none;
+}
+
+.mbti-selector {
+  display: flex;
+  flex-direction: column;
+}
+
+.mbti-selector > p {
+  font-size: 30px;
+}
+
+
+
+
+.mbti-select-area {
+  display: flex;
+}
+
+.mbti-section-box {
+  width: 300px;
+}
+
+.mbti-section-box > div > label {
+  margin-right: 20px;
+}
+
+
+
+.mbti-option input[type="radio"] {
+  display: none;
+}
+
+.mbti-option span {
+  width: 80px;
+  display: inline-block;
+  font-size: 20px;
+  text-align: center;
+  margin: 5px;
+  padding: 6px 12px;
+  border-radius: 15px;
+  background-color: #eee;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.mbti-option input[type="radio"]:checked + span {
+  background-color: orange;
+  color: white;
+  font-weight: bold;
+}
+
+/* 회원가입 버튼 */
+
+.final-btn-box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.final-btn-box > button {
+  border: none;
+  width: 80px;
+  height: 40px;
+  border-radius: 7px;
+  margin-left: 10px;
+  text-align: center;
+  color: white;
+  background-color: #9dcf7f;
+}
+
+.final-btn-box > button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.final-btn-box > a {
+  border: none;
+  width: 80px;
+  height: 40px;
+  border-radius: 7px;
+  margin-left: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 13px;
+  background-color: #9dcf7f;
+}
+
+.final-btn-box > a:visited {
+  color: white;
+}
+
+.final-btn-box > a:hover {
+  color: white;
+  opacity: 0.8;
+}
+
+.final-btn-box > button:active,
+.final-btn-box > a:active {
+  transform: scale(0.97);
+}

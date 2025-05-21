@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+
+.wrap {
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.tripPlanImage {
+	width: 400px;
+	height: 500px;
+}
+
+.tripPlanImage > img {
+  width: 400px;
+  height: 500px;
+}
+
+.content {
+  display: flex;
+  height: 500px;
+  width: 1000px;
+  
+  margin:100px;
+}
+
+.info {
+  margin-left: 20px;
+}
+
+.goPlan {
+  font-size: 30px;
+}
+
+.goPlanLink {
+  text-decoration: none;
+  color: chocolate;
+}
+
+.goPlanLink:visited {
+  color: chocolate;
+}
+
+.goPlanLink:hover {
+  opacity: 0.7;
+}
+
+.goPlanLink:active {
+  font-size: 28px;
+}
+
+.goPlan > img {
+  width: 30px;
+  height: 30px;
+}

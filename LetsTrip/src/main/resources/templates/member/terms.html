@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+    <th:block layout:fragment="css">
+     <style>
+      * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.terms {
+  width: 1280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.terms-name {
+  font-size: 40px;
+  margin: 20px 0;
+}
+
+.terms-title {
+  font-size: 20px;
+  margin: 10px;
+}
+
+.terms-box {
+  width: 500px;
+  height: 200px;
+  overflow-y: scroll;
+  border: 1px solid #000;
+  padding: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.alert-form-area {
+  width: 500px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.alert-form-area > button {
+  margin-top: 40px;
+  height: 35px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: bold;
+  font-size: 18px;
+  background-color: #9dcf7f;
+}
+
+.alert-form-area > button:disabled {
+  background-color: rgb(192, 192, 192);
+}
+
+    </style>
+    </th:block>
+    <th:block layout:fragment="script">
+   
+    </th:block>
+<body>
+<div layout:fragment="main" id="main">
+	 <div class="wrap">
+      <div class="terms">
+        <div class="terms-name">약관 동의</div>
+        <div class="terms-area">
+          <div class="terms-title">개인정보처리약관</div>
+          <div class="terms-box">
+            <p>
+              주식회사 ○○○(이하 "회사")는 「개인정보 보호법」에 따라 이용자의
+              개인정보를 보호하고, 관련 법령에 따라 다음과 같이 개인정보를
+              수집·이용하고자 합니다. 아래 내용을 자세히 읽어보신 후 동의 여부를
+              결정해 주세요.
+              <br />
+              <br />
+
+              1. 수집하는 개인정보 항목 필수항목: 아이디, 비밀번호, 이메일
+              선택항목: 닉네임, 주소, 전화번호 등등
+              <br />
+              <br />
+              2. 개인정보 수집 및 이용 목적 회원 가입 및 본인 확인 맞춤형 여행
+              일정 제공 및 추천 콘텐츠 노출 예약 서비스 제공, 결제 및 환불 처리
+              고객 문의 및 불만처리, 민원 대응 마케팅 및 광고 활용(선택 동의 시)
+              <br />
+              <br />
+              3. 개인정보 보유 및 이용 기간 회원 탈퇴 후 1년간 보관 (단, 관련
+              법령에 따라 보관이 필요한 경우에는 해당 기간 동안 보관) 예:
+              전자상거래법에 따른 거래기록: 5년
+              <br />
+              <br />
+              4. 동의를 거부할 권리 및 불이익 이용자는 개인정보 수집 및 이용에
+              동의하지 않을 권리가 있습니다. 단, 필수항목에 대한 동의를 거부할
+              경우 회원가입 및 서비스 이용이 제한될 수 있습니다.
+            </p>
+          </div>
+
+          <div class="agree-row">
+            <span class="required">(필수)</span>
+            <span> 위의 내용에 동의합니다.</span>
+            <input type="radio" name="agree1" value="agree" />
+            <span class="warning">비동의</span>
+            <input type="radio" name="agree1" value="disagree" />
+          </div>
+        </div>
+
+        <div class="terms-area">
+          <div class="terms-title">이용약관</div>
+          <div class="terms-box">
+            <p>
+              제1조 (목적)
+              <br />
+              이 약관은 ○○○ 여행사(이하 "회사")가 운영하는 웹사이트에서 제공하는
+              서비스의 이용과 관련한 회사와 이용자 간의 권리, 의무 및 책임사항을
+              규정함을 목적으로 합니다.
+              <br />
+              <br />
+              제2조 (정의)
+              <br />
+              1."이용자"란 본 약관에 따라 회사가 제공하는 서비스를 받는 회원 및
+              비회원을 말합니다.
+              <br />
+              2. "회원"이란 회사와 이용계약을 체결한 자로서, 사이트에 로그인하여
+              서비스를 이용할 수 있는 자를 말합니다.
+              <br />
+              <br />
+              제3조 (약관의 효력 및 변경)
+              <br />
+              1. 본 약관은 사이트 초기화면에 게시하거나 기타의 방법으로
+              이용자에게 공지함으로써 효력을 발생합니다.
+              <br />
+              2. 회사는 관련 법령을 위배하지 않는 범위에서 본 약관을 변경할 수
+              있으며, 변경 시 공지사항을 통해 고지합니다.
+              <br />
+              <br />
+              제4조 (서비스의 제공 및 변경)
+              <br />
+              1. 회사는 다음과 같은 서비스를 제공합니다: - 여행 일정 등록 및
+              공유 서비스 - 여행지 추천 콘텐츠 제공 - 여행 후기 및 리뷰 작성
+              기능 - 기타 회사가 정하는 서비스
+              <br />
+              2. 회사는 서비스 운영상 또는 기술상의 필요에 따라 서비스의 내용을
+              변경할 수 있습니다.
+              <br />
+              <br />
+              제5조 (이용자의 의무)
+              <br />
+              1. 이용자는 다음 행위를 하여서는 안 됩니다: - 타인의 정보 도용 -
+              회사 또는 제3자의 저작권 등 권리 침해 - 공공질서 및 미풍양속에
+              반하는 행위 - 기타 불법적이거나 부당한 행위
+              <br />
+              <br />
+              제6조 (서비스의 중단)
+              <br />
+              회사는 천재지변, 정전, 설비 장애 등으로 인해 서비스 제공이 어려운
+              경우 일부 또는 전체 서비스를 일시 중단할 수 있습니다.
+              <br />
+              <br />
+              제7조 (면책조항) 회사는 이용자가 서비스에 게시한 정보, 자료,
+              사실의 신뢰도나 정확성에 대해서는 책임을 지지 않습니다.
+              <br />
+              <br />
+              제8조 (관할법원) 서비스 이용과 관련하여 분쟁이 발생할 경우 회사의
+              본사 소재지를 관할하는 법원을 제1심 관할법원으로 합니다.
+              <br />
+              <br />
+              부칙
+              <br />
+              이 약관은 2025년 5월 2일부터 시행합니다.
+            </p>
+          </div>
+
+          <div class="agree-row">
+            <span class="required">(필수)</span>
+            <span> 위의 내용에 동의합니다.</span>
+            <input type="radio" name="agree2" value="agree" />
+            <span class="warning">비동의</span>
+            <input type="radio" name="agree2" value="disagree" />
+          </div>
+        </div>
+
+        <form class="alert-form-area" action="/signUp" method="get">
+          <label>
+            (선택) 사이트의 알림을 받으시겠습니까? 동의
+            <input type="radio" name="agreedAllAlerts" value="true" />
+            비동의
+            <input type="radio" name="agreedAllAlerts" value="false" />
+          </label>
+
+          <button type="submit" id="nextbtn" disabled>다음</button>
+        </form>
+        <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const agree1Radios = document.querySelectorAll('input[name="agree1"]');
+        const agree2Radios = document.querySelectorAll('input[name="agree2"]');
+        const alertAgreeRadios = document.querySelectorAll(
+          'input[name="agreedAllAlerts"]'
+        );
+        const nextbtn = document.getElementById("nextbtn");
+
+        function isAgreed(radioGroup) {
+          return Array.from(radioGroup).some(
+            (radio) => radio.checked && radio.value === "agree"
+          );
+        }
+
+        function isAnySelected(radioGroup) {
+          return Array.from(radioGroup).some((radio) => radio.checked);
+        }
+
+        function updateButtonState() {
+          const agreed1 = isAgreed(agree1Radios);
+          const agreed2 = isAgreed(agree2Radios);
+          const alertSelected = isAnySelected(alertAgreeRadios);
+          nextbtn.disabled = !(agreed1 && agreed2 && alertSelected);
+        }
+
+        // 각각의 라디오 버튼에 change 이벤트 등록
+        agree1Radios.forEach((r) =>
+          r.addEventListener("change", updateButtonState)
+        );
+        agree2Radios.forEach((r) =>
+          r.addEventListener("change", updateButtonState)
+        );
+        alertAgreeRadios.forEach((r) =>
+          r.addEventListener("change", updateButtonState)
+        );
+
+        // 초기 상태 설정
+        updateButtonState();
+      });
+</script>
+        
+        
+      </div>
+    </div>
+
+
+
+</div>
+
+ 
+</body>
+</html>

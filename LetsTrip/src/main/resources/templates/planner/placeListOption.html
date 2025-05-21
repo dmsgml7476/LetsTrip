@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+   <link rel=stylesheet th:href="@{/css/tripPlace.css}"/>
+    <th:block layout:fragment="css"></th:block>
+   <title>Trip</title>
+</head>
+<body>
+
+<div layout:fragment="main" id="main">
+
+  
+  <div id="placeChoice">
+        <div>
+         
+        <div class="tourPlaces">
+            <p>인근/맞춤추천/별점 순</p>
+            <div class="image-row">
+               <img src="/image/koreaPlace1.jpg"/>
+               <img src="/image/koreaPlace2.jpg"/>
+               <img src="/image/koreaPlace3.jpg"/>
+            </div>
+            <form id="placeForm" method="get" th:action="@{/placeDetail}">
+           
+            <div>
+                <select id="typeSelect">
+                    <option value="">유형</option>
+                    <option value="1">관광지</option>
+                    <option value="2">숙소</option>
+                    <option value="3">식당</option>
+                </select>
+                <select id="placeSelect" name="placeId">
+                    <option value="">장소 선택</option>
+                    <th:block th:each="placeInfo : ${placeType}">
+                       <option 
+                        th:value="${placeInfo.placeId}"
+                         th:text="${placeInfo.placeName}">
+                      </option>
+                    </th:block>
+
+                </select>
+                
+                
+                <input type="hidden" name="selectedDay" id="selectedDayInput" />
+            </div>
+            
+               <button type="button" onclick="saveSelection()" id="store">저장</button><br>
+               <button type="submit" class="next" onclick="nextPage()">다음</button>
+            </form>
+            <a th:href="@{/planner/finalPlan}">
+            	<button type="button" id="finish">마무리</button>
+            </a>
+            
+            
+            
+            
+        </div>
+        <div class="schedule-container">
+          <th:block th:each="i : ${#numbers.sequence(1, tripDays)}">
+              <div class="schedule-group">
+               <button class="schedule" th:data-day="${i}" th:text="|${i}일차|"></button>
+               <ul class="scheduleList" th:id="|day${i}List|"></ul>
+               <p class="noPlaceMsg">여행 갈 장소를 선택해주세요</p>
+              </div>
+          </th:block>
+      </div>
+    </div>
+    
+    
+</div>
+
+
+
+<th:block layout:fragment="script">
+<script th:inline="javascript">
+       window.placeInfo = /*[[${placeType}]]*/ [];
+    </script>
+    <script src="/javascript/placeListOption.js"></script>
+</th:block>
+
+</body>
+</html>

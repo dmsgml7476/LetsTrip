@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+<title>Insert title here</title>
+ <style>
+ body {
+      margin: 0;
+      padding: 40px;
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      color: #222;
+    }
+
+    .story-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .story-title {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .story-author {
+      font-size: 16px;
+      color: #888;
+      margin-bottom: 20px;
+    }
+
+    .story-image {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .story-content {
+      font-size: 18px;
+      line-height: 1.6;
+      white-space: pre-line;
+      margin-bottom: 20px;
+    }
+
+    .hashtags {
+      font-size: 16px;
+      color: #007acc;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: white;
+      background-color: #007acc;
+      padding: 10px 20px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+ <th:block th:replace="story/mainMenu :: mainMenu"></th:block>
+ 
+ <div class="story-container">
+    <div class="story-author" th:text="|@${story.loginId}|">작성자</div>
+    <div class="story-title" th:text="${story.storyTitle}">스토리 제목</div>
+
+    <img th:if="${story.storyImgUrl != null}" th:src="${story.storyImgUrl}" alt="story image" class="story-image" />
+
+    <div class="story-content" th:text="${story.storyContent}">내용</div>
+
+    <div class="hashtags" th:each="tag : ${story.hashTags}" th:text="'#' + ${tag}">#해시태그</div>
+    
+    <div class="comments-section">
+  <h4>댓글</h4>
+  <div th:if="${story.storyCommentDtoList != null}">
+    <div th:each="comment : ${story.storyCommentDtoList}">
+      <p><strong th:text="${comment.writer}">작성자</strong>: <span th:text="${comment.content}">댓글 내용</span></p>
+    </div>
+  </div>
+</div>
+    
+
+    <a href="/weStory" class="back-btn">돌아가기</a>
+  </div>
+ 
+<th:block th:replace="story/mainFooter :: mainFooter"></th:block>
+</body>
+</html>

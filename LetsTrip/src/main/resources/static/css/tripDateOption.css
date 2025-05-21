@@ -1,0 +1,30 @@
+
+
+.next-button-wrapper button {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.button-area {
+  width: 600px; /* 달력 영역과 같게 */
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+#toBasic{
+	background-color: purple;
+	color: white;
+}
+
+#dateChoice{
+	font-size: 30px;
+}
+
+.current-year{
+	color:white;
+}
+
+.current-month{
+	color:white;
+}

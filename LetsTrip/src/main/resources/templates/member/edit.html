@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <th:block layout:fragment="css">
+    <link rel="stylesheet" type="text/css" href="/css/edit.css">
+    </th:block>
+
+</head>
+<body>
+
+<div layout:fragment="main" id="main">
+
+<div class="wrap">
+      <div class="edit-area">
+        <div class="page-name">회원 설정 수정</div>
+
+        <div class="profile-show-box">
+          <div class="profile-img-show">
+             <form id="profileForm" th:action="@{/mypage/profile/upload}" method="post" enctype="multipart/form-data">
+  					<label for="profileInput" class="profile-box">
+  					 <img th:if="${userDetail != null and !#strings.isEmpty(userDetail.profileImg)}"
+ 						    th:src="@{'/upload/profile/' + ${userDetail.profileImg} + '?t=' + ${#dates.createNow().time}}"
+     						class="profile-img"
+     						alt="프로필 이미지" />
+ 					  <img th:unless="${userDetail != null and !#strings.isEmpty(userDetail.profileImg)}"
+         					src="/image/default-profile.png"
+         					class="profile-img"
+         					alt="기본 이미지" />
+  					</label>
+
+  					<input type="file" id="profileInput" name="profileImg" style="display: none;" accept="/image/*" onchange="submitProfile()" />
+				</form>
+          </div>
+
+          <div class="profile-info-name">
+            <div class="info-name">닉네임</div>
+            <div class="info-name">이메일</div>
+            <div class="info-name">주소</div>
+            <div class="info-name">전화번호</div>
+          </div>
+
+          <div class="profile-info-value" th:if="${userDetail != null}">
+            <div class="info-value" th:text="${user.nickname}">유자냠냠이</div>
+            <div class="info-value" th:text="${userDetail.email}">shin_chan@gmail.com</div>
+            <div class="info-value" th:text="${userDetail.address}">대전시 대덕구 000로 1209</div>
+            <div class="info-value" th:text="${userDetail.tel}">010-5879-7572</div>
+          </div>
+        </div>
+
+        <div class="edit-button-box">
+          <div class="password-edit">
+            <button onclick="openPasswordEditModalONE()">비밀번호 변경</button>
+          </div>
+
+          <div class="info-edit">
+            <button onclick="openInfoEditModalONE()">회원정보 변경</button>
+          </div>
+        </div>
+
+        <div class="hashtag-edit-area">
+        	<div class="hashtag-box">
+          <div class="hashtag-edit-title">
+            <p>해시태그로 날 표현해보세요</p>
+          </div>
+
+          <div id="hashtagContainer">
+  			<!-- 일반 해시태그 -->
+  			<th:block th:each="tag : ${hashtags}">
+    			<span class="hashtag"
+          			th:data-id="${tag.id}"
+          			th:text="'#' + ${tag.hashtag}"
+          			th:classappend="${selectedHashtagIds.contains(tag.id)} ? ' selected' : ''"></span>
+  			</th:block>
+
+  				<!-- MBTI 해시태그 (숨김 처리) -->
+  			<th:block th:each="mbti : ${mbtiTags}">
+    			<span class="hashtag mbti-hidden"
+          			th:data-id="${mbti.id}"
+          			th:text="'#' + ${mbti.hashtag}"
+          			th:classappend="${selectedHashtagIds.contains(mbti.id)} ? ' selected' : ''"></span>
+  			</th:block>
+		 </div>
+
+<!--          <input type="hidden" name="hashtagIds" id="selectedHashtags" /> -->
+      </div>
+
+
+
+          <div class="mbti-edit-area">
+            <div class="mbti-edit-title">
+              <p>나의 MBTI</p>
+            </div>
+
+              <button id="my-mbti" class="my-mbti" onclick="toggleMbtiEditBox()" th:text="${mbti}">mbti</button>
+
+          </div>
+          <div class="my-mbti-edit-box" id="mbtiEditBox" style="display: none;">
+          	<form method="post" action="/mypage/edit/mbti" id="mbtiForm">
+          	<div class="mbti-section-area">
+          		<div class="mbti-section-box">
+ 					<div>
+    					<label class="mbti-option"><input type="radio" name="mbti1" value="E" required><span>E</span></label>
+    					<label class="mbti-option"><input type="radio" name="mbti1" value="I"><span>I</span></label>
+  					</div>
+  					<div>
+    					<label class="mbti-option"><input type="radio" name="mbti2" value="S" required><span>S</span></label>
+    					<label class="mbti-option"><input type="radio" name="mbti2" value="N"><span>N</span></label>
+  					</div>
+          		</div>
+          		<div class="mbti-section-box">
+  					<div>
+    					<label class="mbti-option"><input type="radio" name="mbti3" value="T" required><span>T</span></label>
+    					<label class="mbti-option"><input type="radio" name="mbti3" value="F"><span>F</span></label>
+  					</div>
+  					<div>
+    					<label class="mbti-option"><input type="radio" name="mbti4" value="J" required><span>J</span></label>
+    					<label class="mbti-option"><input type="radio" name="mbti4" value="P"><span>P</span></label>
+  					</div>
+          		</div>
+          	</div>
+
+  				<!-- 숨겨진 input으로 조합된 MBTI 저장 -->
+  				<input type="hidden" name="mbti" id="finalMbti">
+
+  				<button class="save-mbti-btn" type="submit" onclick="combineMbti()">저장</button>
+			</form>
+          </div>
+        </div>
+
+        <div class="alert-edit-area">
+          <div class="alert-edit-title">
+            <p>알림 설정</p>
+          </div>
+
+          <div class="alert-edit-box">
+            <div class="alert-edit-name">
+              <div class="alert-name my-trip-alert">내 일정 알림</div>
+              <div class="alert-name my-comm-alert">커뮤니티 활동 알림</div>
+            </div>
+            <div class="alert-edit-value">
+              <div class="agree-box my-trip-alert-value">
+                <p>동의</p>
+                <input type="radio" name="agreedMyTripAlerts" value="true" 
+                		th:checked="${tripAlert} == true"/>
+                <p>비동의</p>
+                <input type="radio" name="agreedMyTripAlerts" value="false"
+                		th:checked="${tripAlert} == false" />
+              </div>
+
+              <div class="agree-box my-comm-alert-value">
+                <p>동의</p>
+                <input type="radio" name="agreedCommAlerts" value="true"
+                		th:checked="${commAlert} == true" / />
+                <p>비동의</p>
+                <input type="radio" name="agreedCommAlerts" value="false"
+                		th:checked="${commAlert} == false" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a class="return-mypage" href="/mypage/main"><img src="/image/arrow.png" /></a>
+
+
+      </div>
+      
+      
+      <!-- 모달창 -->
+      
+       <div id="openPasswordEditModalONE" class="modal">
+          <div class="modal-container">
+            <div class="modal-header">
+              <div></div>
+              <h2>비밀번호 변경</h2>
+              <span class="close" onclick="closePasswordEditModalONE()">&times;</span>
+            </div>
+
+			
+            <div class="input-area current-password-chk-area">
+              <form id="pwChkForm-password">
+                <div class="input-box chk-box">
+                  <p>현재 비밀번호 확인</p>
+                  <input type="password" id="currentPassword-password" />
+                  <p id="pwErrorMsg-password" class="chk-text" style="display:none; margin: 0; font-size: 15px;">비밀번호가 틀렸습니다</p>
+                </div>
+
+                <button type="submit">다음</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 비밀번호 변경창 -->
+
+        <div id="openPasswordEditModalTWO" class="modal">
+          <div class="modal-container">
+            <div class="modal-header">
+              <div></div>
+              <h2>비밀번호 변경</h2>
+              <span class="close" onclick="closePasswordEditModalTWO()">&times;</span>
+            </div>
+
+            <div class="input-area">
+              <form action="/mypage/editPw" method="post" id="changePwForm">
+                <div class="input-box editPs-box">
+                  <p>비밀번호</p>
+                  <input type="password" name="newPassword" id="newPassword" required />
+                  <p class="chk-text" id="pwCheckMsg" style="display: none; margin: 0; font-size: 15px;">비밀번호는 어쩌구저쩌구</p>
+                  <p>비밀번호 확인</p>
+                  <input type="password" name="confirmPassword" id="pwChk" required />
+                  <p class="chk-text" id="pwMismatchMsg" style="display: none; margin: 0; font-size: 15px;">비밀번호가 일치하지 않습니다</p>
+                </div>
+
+                <button type="submit" id="changePwBtn" disabled >변경</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 회원정보 변경 전 비번확인창 -->
+        
+        
+        <div id="openInfoEditModalONE" class="modal">
+          <div class="modal-container">
+            <div class="modal-header">
+              <div></div>
+              <h2>회원정보 변경</h2>
+              <span class="close" onclick="closeInfoEditModalONE()">&times;</span>
+            </div>
+
+			
+            <div class="input-area current-password-chk-area">
+              <form id="pwChkForm-info">
+                <div class="input-box chk-box">
+                  <p>현재 비밀번호 확인</p>
+                  <input type="password" id="currentPassword-info" />
+                  <p class="chk-text" id="pwErrorMsg-info" style="display:none; margin: 0; font-size: 15px;">비밀번호가 틀렸습니다</p>
+                </div>
+
+                <button type="submit">다음</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+                <!-- 회원정보 변경창 -->
+
+        <div id="openInfoEditModalTWO" class="modal">
+          <div class="modal-container info-edit-modal">
+            <div class="modal-header">
+              <div></div>
+              <h2>회원정보 변경</h2>
+              <span class="close" onclick="closeInfoEditModalTWO()">&times;</span>
+            </div>
+
+            <div class="input-area info-edit-area">
+              <form action="/mypage/editInfo" method="post">
+                <div class="input-box info-edit-area">
+                  <div class="nickname-edit info-edit-box">
+	                  <div class="info-edit-input-box">
+    	                <p>닉네임</p>
+        	            <input type="text" name="nickname" th:value="${user.nickname}" />
+            	        <p class="chk-text" id="nicknameChkMsg"style="display: none; margin: 0; font-size: 15px;">경고메세지</p>
+                	  </div>
+                  </div>
+                  <div class="email-edit info-edit-box">
+                  	<div class="info-edit-input-box">
+	                    <p>이메일</p>
+	                    <input type="email" name="email" th:value="${userDetail.email}"/>
+	                    <p class="chk-text" id="emailChkMsg" style="display: none; margin: 0; font-size: 15px;">경고메세지</p>
+                  	
+                  	</div>
+                  </div>
+                  <div class="address-edit info-edit-box">
+                  	<div class="info-edit-input-box">
+                  	
+	                    <p>주소</p>
+	                    <input type="text" name="address" th:value="${userDetail.address}" />
+                  	</div>
+                    
+                  </div>
+                  <div class="tel-edit info-edit-box">
+                  	<div class="info-edit-input-box">
+                  	
+	                    <p>전화번호</p>
+	                    <input type="text" name="tel" th:value="${userDetail.tel}" />
+	                    <p class="chk-text" id="telChkMsg" style="display: none; margin: 0; font-size: 15px;">경고메세지</p>
+                  	</div>
+                  </div>
+                </div>
+
+                <button type="submit" id="changeInfoBtn">변경</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 모달창 끝 -->
+      
+    </div>
+
+</div>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <th:block layout:fragment="script">
+    <script th:src="@{/javascript/edit.js}" defer></script>
+    </th:block>
+</body>
+</html>

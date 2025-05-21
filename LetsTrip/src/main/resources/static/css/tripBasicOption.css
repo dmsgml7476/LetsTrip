@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+.toPlaceList{
+	background-color: purple;
+	color: white;
+}
+
+#basicOption1{
+	 display:flex;
+	 justify-content: center;
+	 align-items: center;
+}

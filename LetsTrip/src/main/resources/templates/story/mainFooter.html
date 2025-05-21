@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+		<footer th:fragment="mainFooter" id="footer">
+	
+		<style>
+		footer{
+			position:relative;
+			background-color:white;
+		}
+      /* div 클래스 1: noticeBox 스타일 */
+      .noticeBox {
+        /* 필요에 따라 정렬 등 추가 */
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px; /* 다음 섹션과의 간격 */
+        font-size: 14px; /* 공지 내용의 기준 폰트 크기 설정 (예시) */
+        background-color: #ffffff;
+        border-top: 1px solid #a8a8a8;
+      }
+
+      /* noticeBox 안의 '공지사항' 부분 (span 등으로 감쌌다고 가정) */
+      .noticeBox .notice-title {
+        font-weight: bold; /* 공지사항 글자 굵게 */
+        margin-right: 40px; /* '공지사항'과 '공지내용' 사이 간격 */
+        flex-shrink: 0;
+      }
+
+      /* noticeBox 안의 '공지내용' 부분 (span 등으로 감쌌다고 가정) */
+      .noticeBox .notice-content {
+        font-weight: normal; /* 공지내용 일반 글자체 */
+        /* 폰트 크기는 부모인 noticeBox의 font-size를 따라감 */
+        flex-grow: 1;
+      }
+
+      /* div 클래스 2: guidMenu 스타일 */
+      .guidMenu {
+        border-top: 1px solid #a8a8a8;
+        padding-top: 5px;
+        margin-bottom: 5px; /* 다음 섹션과의 간격 */
+      }
+
+      /* guidMenu 안의 모든 a 태그 스타일 */
+      .guidMenu a {
+        font-size: 12px; /* noticeBox 내용(14px)보다 2px 작게 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: #333; /* 링크 색상 (예시) */
+        margin-right: 15px; /* 링크들 사이 간격 */
+      }
+
+      /* guidMenu 마지막 링크에는 간격 제거 (선택 사항) */
+      .guidMenu a:last-child {
+        margin-right: 0;
+      }
+
+      /* div 클래스 3: cs 스타일 */
+      .cs {
+        margin-bottom: 15px;
+        /* 필요에 따라 푸터 맨 아래 div는 간격 조정 */
+        border-bottom: 1px solid #a8a8a8;
+      }
+
+      /* cs 안의 모든 a 태그 스타일 */
+      .cs a {
+        font-size: 10px; /* guidMenu(12px)보다 2px 작게 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: #666; /* 링크 색상 (예시, guidMenu보다 연하게) */
+        margin-right: 15px; /* 링크들 사이 간격 */
+      }
+
+      /* cs 마지막 링크에는 간격 제거 (선택 사항) */
+      .cs a:last-child {
+        margin-right: 0;
+      }
+    </style>
+	 
+	 	<div class="noticeBox">
+	 		<span class="notice-title">공지사항</span>
+     		<span class="notice-content">여행일정 사이트 업데이트 진행(~5.15)</span>
+	 	</div>
+	 	
+	 	<div class="guidMenu">
+      <nav>
+          <a href="/">HOME</a>
+          <a href="/tripMain">여행플래너</a>
+          <a href="/announcement">공지사항</a>
+          <a href="/privacyPolicy">개인정보처리방침</a>
+          <a href="/customerServiceCenter">고객센터</a>
+      </nav>
+	 	</div>
+	 	
+	 	<div class="cs">
+      <nav>
+        <a href="/termsOfUse">이용약관</a>
+        <a href="/termsOfUseForLocationBasedServices">위치기반서비스 이용약관</a>
+        <a href="/copyrightProtectionPolicy">저작권 보호정책</a>
+        <a href="/customerServiceSite">고객서비스현장</a>
+        <a href="/RefusalOfUnauthorizedCollectionOdEmail">전자우편 무단수집거부</a>
+      </nav>
+	 	</div>
+    </footer>
+</html>

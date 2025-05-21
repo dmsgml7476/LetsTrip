@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <th:block layout:fragment="css"></th:block>
+   <title>Trip</title>
+</head>
+<body>
+
+<div layout:fragment="main" id="main">
+
+    <div>
+        <div>
+            <img src="">
+        </div>
+        <div>
+            <h2>관광지 정보</h2>
+            <div>
+               <p>관광지명:<span th:text="${placeName}"></span></p><br>
+               <p>주소:<span th:text="${placeAddress}"></span></p>
+               <p>설명:<span th:text="${placeInfo}"></span></p>
+            </div>
+            <button onclick="saveToScheduleAndBack()">내 관광지 목록에 추가</button>
+            
+        </div>
+    </div>
+    
+
+
+</div>
+
+
+<th:block layout:fragment="script">
+<script th:inline="javascript">
+function saveToScheduleAndBack() {
+    const placeId = /*[[${place.placeId}]]*/ 0;
+    const placeName = /*[[${placeName}]]*/ '장소이름';
+    const selectedDay = /*[[${selectedDay}]]*/ 1;
+
+    const newPlace = {
+        placeId: placeId,
+        placeName: placeName,
+        day: selectedDay
+    };
+
+    // 기존 배열 가져오기 (없으면 빈 배열)
+    let savedPlaces = JSON.parse(localStorage.getItem('selectedPlaces')) || [];
+
+    // 중복 방지 (같은 day + placeId)
+    const isDuplicate = savedPlaces.some(
+        (p) => p.placeId === newPlace.placeId && p.day === newPlace.day
+    );
+    if (!isDuplicate) {
+        savedPlaces.push(newPlace);
+    }
+
+    // 다시 저장
+    localStorage.setItem('selectedPlaces', JSON.stringify(savedPlaces));
+
+    fetch('/addPlaceToMyList', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newPlace)
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("DB 저장 실패");
+        return response.text();
+    })
+    .then(msg => console.log(msg))
+    .catch(error => console.error(error));
+
+    // ✅ 2-3. 페이지 이동
+    window.location.href = "/placeListOption";
+}
+    
+    
+
+
+</script>
+   <script src="/javascript/regionListOption.js"></script>
+</th:block>
+
+</body>
+</html>

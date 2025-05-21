@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>나의 스토리</title>
+  <style>
+    body {
+      background-color: #f0f2f5;
+      font-family: Arial, sans-serif;
+    }
+
+    .section-title {
+      max-width: 600px;
+      margin: 30px auto 10px auto;
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .story-card {
+      max-width: 600px;
+      margin: 10px auto 20px auto;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      padding: 16px;
+      position: relative;
+    }
+
+    .story-author {
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .story-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .story-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .story-container {
+      border: 1px solid #eee;
+      padding: 10px;
+      margin-bottom: 10px;
+      min-height: 80px;
+      white-space: pre-wrap;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .story-container:focus {
+      outline: none;
+      border-color: #28a745;
+      background-color: #fff;
+    }
+
+    .hashtags {
+      color: #007bff;
+      font-size: 0.9em;
+      margin-top: 8px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .edit-button,
+    .delete-button {
+      padding: 6px 12px;
+      font-size: 0.9em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .edit-button {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .edit-button:hover {
+      background-color: #0056b3;
+    }
+
+    .delete-button {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .delete-button:hover {
+      background-color: #c82333;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-size: 0.85em;
+    }
+
+    .loading {
+      color: #ffc107;
+    }
+
+    .success {
+      color: #28a745;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <th:block th:replace="story/mainMenu :: mainMenu"></th:block>
+
+  <div th:each="story, iterStat : ${myStoryList}">
+    <!-- 제목은 첫 번째 카드 위에만 표시 -->
+    <h3 th:if="${iterStat.first}" class="section-title">MY 스토리 모아보기</h3>
+
+    <div class="story-card">
+      <div class="story-author" th:text="|@${story.loginId}|">작성자</div>
+      <div class="story-title" th:text="${story.storyTitle}">스토리 제목</div>
+
+      <img th:if="${story.storyImgUrl != null}" th:src="${story.storyImgUrl}" alt="story image" class="story-image" />
+
+      <div id="editableStory" class="story-container"
+           contenteditable="false"
+           th:attr="data-story-id=${story.storyId}"
+           th:text="${story.storyContent}">
+        스토리 내용
+      </div>
+
+      <div class="hashtags" th:if="${story.hashTags != null}">
+        <span th:each="tag : ${story.hashTags}" th:text="|#${tag} |"></span>
+      </div>
+
+      <div class="button-group">
+        <button id="editButton" class="edit-button">수정</button>
+
+        <form th:action="@{'/story/delete/' + ${story.storyId}}" method="post" id="delete-form" style="display:inline;">
+          <button id="delete-story" type="submit" class="delete-button">삭제</button>
+        </form>
+      </div>
+
+      <div id="statusMessage" class="message"></div>
+    </div>
+  </div>
+
+  <th:block th:replace="story/mainFooter :: mainFooter"></th:block>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const editButtons = document.querySelectorAll(".edit-button");
+
+      editButtons.forEach(editButton => {
+        const storyCard = editButton.closest(".story-card");
+        const storyDiv = storyCard.querySelector("#editableStory");
+        const statusMessage = storyCard.querySelector("#statusMessage");
+        const deleteForm = storyCard.querySelector("#delete-form");
+        const deleteButton = storyCard.querySelector("#delete-story");
+
+        editButton.addEventListener("click", async () => {
+          const isEditable = storyDiv.contentEditable === "true";
+          const storyId = storyDiv.getAttribute("data-story-id");
+
+          if (isEditable) {
+            storyDiv.contentEditable = "false";
+            editButton.textContent = "수정";
+            storyDiv.style.border = "1px solid #eee";
+            storyDiv.style.backgroundColor = "#f9f9f9";
+
+            const updatedContent = storyDiv.textContent.trim();
+
+            statusMessage.textContent = "스토리 저장 중...";
+            statusMessage.className = "message loading";
+
+            try {
+              const response = await fetch(`/story/update/${storyId}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedContent)
+              });
+
+              if (response.ok) {
+                statusMessage.textContent = "스토리를 성공적으로 저장했습니다.";
+                statusMessage.className = "message success";
+              } else {
+                throw new Error("서버 응답 오류");
+              }
+            } catch (error) {
+              console.error("스토리 저장 실패:", error);
+              statusMessage.textContent = "스토리 저장에 실패했습니다.";
+              statusMessage.className = "message error";
+            }
+
+          } else {
+            storyDiv.contentEditable = "true";
+            storyDiv.focus();
+            editButton.textContent = "완료";
+            storyDiv.style.border = "1px solid #28a745";
+            storyDiv.style.backgroundColor = "#fff";
+            statusMessage.textContent = "수정 모드입니다.";
+            statusMessage.className = "message";
+          }
+        });
+
+        deleteButton.addEventListener("click", (event) => {
+          event.preventDefault();
+          const confirmed = confirm("정말로 이 스토리를 삭제하시겠습니까?");
+          if (confirmed) {
+            fetch(deleteForm.action, {
+              method: deleteForm.method,
+            })
+              .then(response => {
+                if (response.ok) {
+                  alert("스토리가 삭제되었습니다.");
+                  window.location.href = '/weShow.html';
+                } else {
+                  alert("스토리 삭제 중 오류가 발생했습니다.");
+                }
+              })
+              .catch(error => {
+                console.error("삭제 요청 오류:", error);
+                alert("삭제 요청 중 오류가 발생했습니다.");
+              });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

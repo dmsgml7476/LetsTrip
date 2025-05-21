@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+				 <header th:fragment="mainMenu"   id="header">
+				   <style>
+           /*메인메뉴*/
+      * {
+        font-family: "Arial", sans-serif;
+        padding: 0;
+        margin: 0;
+        /* background-color: #f5f5f5; */
+      }
+      #header{
+      	margin-bottom: 80px;
+      	background-color:white;
+      }
+      .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: #006cfa;
+        color: rgb(0, 0, 0);
+        z-index: 999;
+        box-shadow: 0 2px 5px rgba(250, 250, 250, 0.2);
+      }
+      .navbar-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 10px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 32px;
+        font-weight: bold;
+        color: #ffffff;
+      }
+
+      .menu {
+        display: flex;
+        gap: 30px;
+      }
+
+      .menu a {
+        text-decoration: none;
+        font-weight: bold;
+        color: white;
+        font-size: 16px;
+      }
+
+      .menu a:hover {
+        color: #000000;
+      }
+
+		    .auth {
+		    /* 요소들을 가로로 나란히 정렬해줘 */
+		    display: flex;
+		    /* 요소들 세로 방향 가운데 맞춰줘 */
+		    align-items: center;
+		    /* 요소들 사이에 적당히 간격 띄워줘 */
+		    gap: 15px; /* 간격은 조절해도 괜찮아! */
+		}
+		
+		.auth a,
+		.auth span {
+		    /* 링크랑 이름 표시되는 글자 색깔을 흰색으로! */
+		    color: white;
+		    /* (선택 사항) 링크 밑줄 없애는 건데, 필요 없으면 빼도 돼 */
+		    text-decoration: none;
+		    /* (선택 사항) 글자 누르면 커서 모양 바뀌게 하고 싶으면 추가해봐! */
+		    cursor: pointer;
+		}
+      
+	 .main-content {
+        margin-top: 10px;
+        display: block;
+        flex-direction: column;
+        align-items: baseline;
+        gap: 0px;
+        padding: 20px;
+        height: 2000px;
+        background: #f5f5f5;
+      }
+	</style>		 
+        <!--메인(모든 페이지 동일)메뉴-->
+         <!-- 상단 고정 네비게이션 바 -->
+			  <div class="navbar">
+			    <div class="navbar-inner">
+			      	<div
+			            class="logo"
+			            id="logo"
+			            type="button"
+			            onclick="location.href='/letsmain'">
+			            Let's</div>
+			      <div class="menu">
+			        <a href="/weStory">스토리</a>
+			        <a href="/community">커뮤니티</a>
+			        <a href="/benefit">여행혜택</a>
+			      </div>
+      			<script>
+					  document.addEventListener("DOMContentLoaded", () => {
+					    const navbar = document.querySelector('.navbar');
+					    const content = document.querySelector('.content');
+					
+					    const navbarHeight = navbar.offsetHeight;
+					    content.style.marginTop = `${navbarHeight + 20}px`; });
+					</script>
+      
+      <div class="auth">
+        <a sec:authorize="isAnonymous()"  href="javascript:login();">로그인</a>
+        		<span id="userNameDisplay" sec:authorize="isAuthenticated()" class="px-3" sec:authentication="name"></span>
+        <a sec:authorize="isAuthenticated()" href="/logout" >로그아웃</a>
+        		<script>
+        		document.addEventListener('DOMContentLoaded', function() {
+        		    console.log('DOMContentLoaded 이벤트 발생!'); // <-- 이거 추가
+        		    const userNameElement = document.getElementById('userNameDisplay');
+        		    console.log('userNameElement 찾음:', userNameElement); // <-- 이거 추가
+
+        		    if (userNameElement) {
+        		        console.log('userNameElement가 존재함. 클릭 이벤트 리스너 추가 시작'); // <-- 이거 추가
+        		        userNameElement.addEventListener('click', function() {
+        		            console.log('이름 클릭됨!'); // <-- 이거 추가
+        		            window.location.href = '/myStory';
+        		        });
+        		        userNameElement.style.cursor = 'pointer';
+        		    } else {
+        		        console.log('userNameDisplay 요소를 찾지 못했습니다.'); // <-- 이거 추가
+        		    }
+        		});
+        		</script>
+      </div>
+    </div>
+  </div>
+    <!--로그인 동작-->
+    <script>
+    function login(){
+    	let nowUrl = location.href.split("/");
+    	console.log(nowUrl);
+    	nowUrl = nowUrl[ nowUrl.length-1];
+    	location.href="/login?redirect="+nowUrl;
+    }
+
+  </script>
+  </header>
+</html>

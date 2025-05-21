@@ -1,0 +1,308 @@
+@charset "UTF-8";
+
+@charset "UTF-8";
+
+
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+}
+
+a {
+  color: gray;
+  text-decoration: none;
+}
+
+a:visited {
+  color: gray;
+}
+
+.wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-num a.active {
+  font-weight: bold;
+  color: darkgreen;
+}
+
+.wrap-box {
+  width: 900px;
+
+  height: 700px;
+  display: flex;
+  align-items: stretch;
+}
+
+.category {
+  width: 150px;
+  border-right: 2px solid lightgray;
+  padding: 20px;
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-ul {
+  display: flex;
+  width: 100px;
+  height: 660px;
+
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: space-between;
+}
+
+.mgmt-content {
+  margin: 110px 70px;
+}
+
+.mgmt-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-area {
+	height : 360px;
+}
+.mgmt-title {
+  font-size: 40px;
+}
+
+/* 본내용 */
+
+.csMgmt-content {
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.csMgmt-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.csMgmt-title {
+  font-size: 30px;
+}
+
+.csMgmt-filter-area {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.search-box {
+  height: 35px;
+  border: 2px solid gray;
+  width: 250px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.search-box > img {
+  margin: 0 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.search-box > input {
+  height: 30px;
+  width: 80%;
+  border: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+.csMgmt-op-box > select {
+  height: 35px;
+}
+
+/* 테이블 영역 */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: center;
+  white-space: nowrap; /* 줄바꿈 방지 */
+  word-break: keep-all; /* 단어 단위로 끊지 않기 */
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+td {
+  border: none;
+  padding: 0 5px;
+  border: 1px solid black;
+  text-align: center;
+  white-space: nowrap;
+  word-break: keep-all;
+  background-color: white;
+  height: 30px;
+  font-size: 15px;
+  max-width: 230px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.td-num {
+  width: 20px;
+  font-size: 15px;
+}
+
+.th-date {
+  width: 75px;
+}
+
+.th-option,
+.th-category,
+.th-status {
+  width: 50px;
+}
+
+.th-content {
+  width: 230px;
+}
+
+/* 페이지 넘기는거 */
+
+.page-num-box {
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  width: 300px;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.img-btn {
+  display: flex;
+  width: 20px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.img-btn > img {
+  width: 20px;
+}
+
+.page-num {
+  width: 250px;
+  /* border: 1px solid rebeccapurple; */
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* 모달창 */
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.cs-ans-date-box {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  border: 1px solid;
+  background-color: white;
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cs-q-text {
+  height: 120px;
+  padding: 10px;
+  white-space: normal;
+  word-break: break-word;
+  text-align: left;
+  vertical-align: top;
+}
+
+/* 처리하기 글자랑 select 태그 */
+
+.cs-ans-op-area {
+  display: flex;
+  margin: 10px 0;
+  height: 35px;
+  justify-content: space-between;
+}
+
+.cs-ans-title {
+  font-size: 25px;
+}
+
+.cs-ans-status > select {
+  height: 35px;
+  width: 80px;
+}
+
+/* 처리입력창*/
+
+
+
+.cs-ans-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cs-ans-textarea {
+
+  height: 120px;
+  resize: none;
+}
+
+.cs-ans-btn-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 110px;
+}
+
+.cs-ans-delay,
+.cs-ans-close {
+  height: 50px;
+  font-size: 20px;
+}

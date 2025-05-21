@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Let's Trip</title>
+
+	<link rel="stylesheet" href="/admin/css/header.css">
+	<link rel="stylesheet" href="/admin/css/footer.css">
+    <th:block layout:fragment="css"></th:block>
+
+    </th:block>
+</head>
+<body>
+
+  <div id="wrap">
+    
+    <th:block th:replace="admin/layout/header :: header"></th:block>
+    <div layout:fragment="main"></div>
+	<th:block th:replace="admin/layout/footer :: footer"></th:block>
+
+  </div>
+
+  <th:block layout:fragment="script"></th:block>
+</body>
+</html>

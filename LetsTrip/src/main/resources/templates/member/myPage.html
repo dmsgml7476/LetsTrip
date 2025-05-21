@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+    <th:block layout:fragment="css">
+    	<link rel="stylesheet" type="text/css" href="/css/myPage.css">
+    </th:block>
+<!--     <th:block layout:fragment="script">
+    	<script th:src="@{/javascript/myPage.js}"></script>
+    </th:block> -->
+<body>
+<div layout:fragment="main" id="main">
+
+<div class="wrap">
+
+      <div class="mypage-box">
+        <div class="mybox">
+          <div class="my-info">
+            <div class="my-info-op-area">
+              <div class="my-info-op">
+                <div class="more-btn" id="moreBtn">
+                  <img
+                    src="/image/morebutton.png"
+                    style="width: 15px; height: 15px"
+                  />
+                </div>
+                
+                <div class="more-menu" id="moreMenu">
+                	<ul>
+                		<li><a href="/mypage/edit">회원정보수정</a></li>
+                		<li><a href="/mypage/csMyList">문의 내역</a></li>
+                		<li><a href="/logout">로그아웃</a></li>
+                	</ul>
+                </div>
+              </div>
+              <div class="my-info-profil-area">
+              	<div class="profil-box-area">
+					<div class="profil-box">
+  					  <img th:if="${userDetail != null and !#strings.isEmpty(userDetail.profileImg)}"
+    					    th:src="@{/upload/profile/{img}(img=${userDetail.profileImg})}"
+         					class="profil-img"
+         					alt="프로필 이미지"/>
+  					</div>
+
+				</div>
+              </div>
+              
+              <!-- 닉네임이랑 해시태그 박스 -->
+              
+              <div class="nick-hash-box">
+              
+              	<div class="nickname-area" th:if="${userDetail != null}">
+    
+                	<div th:text="${user.nickname}">닉네임</div>
+                	의 발자취
+                	<img src="/image/footprint.png" />
+    
+              	</div>
+              	<div class="hashtag-area">
+                	<div class="hashtag-box">
+						<th:block th:each="tag : ${userHashtags}">
+             				<span th:text="'#' + ${tag}">#태그</span>
+             	 		</th:block>
+					</div>
+              	</div>
+              
+              </div>
+              
+              
+              
+            
+            </div>
+          </div>
+
+          <div class="my-calendar">
+          	<div class="calender-area">
+          		<div class="year-month">
+			  		<div class="year-select-box">
+			  			<div class="plus-minus">
+				  			<div class="plus-year">
+				  				<img id="yearPlusYear" class="year-arrow" src="/image/year-arrow-yellow.png"/>
+				  			</div>
+				  			<div class="minus-year">
+			  					<img id="yearMinusYear" class="year-arrow" src="/image/year-arrow-yellow.png"/>
+			  				</div>
+			  			</div>
+			  			<div class="year" id="currentYear">			  	
+			  				2025
+			  			</div>
+			  		</div>          		
+    		  		<div class="month-select">
+       					<button class="minus-month"
+       							style="background-color: rgb(253, 250, 245)">
+          					<img class="arrow" src="/image/left-arrow.png" />
+        				</button>
+        	    		<div class="current-month" id="currentMonth">5</div>
+        				<button class="plus-month" style="background-color: rgb(253, 250, 245)">
+          					<img class="arrow" src="/image/right-arrow.png" />
+        				</button>
+      		  		</div>
+          		</div>
+      		  <div class="calender-box">
+      		  	<div class="week">
+      		  		<div>일</div>
+      		  		<div>월</div>
+      		  		<div>화</div>
+      		  		<div>수</div>
+      		  		<div>목</div>
+      		  		<div>금</div>
+      		  		<div>토</div>
+      		  	</div>
+      			<div id="cal"></div>
+      		  </div>
+    	  </div>
+          
+         </div>
+      </div>
+        <!-- 대표스토리영역 -->
+
+        <div class="my-mainstory-area">
+          <div class="my-mainstory-title">
+            나의 대표 스토리
+            <img
+              src="/image/colorline.png"
+              style="width: 100px; height: 90px; background-color: white"
+            />
+          </div>
+        
+          <div class="my-mainstory-boxs">
+            <div class="my-mainstory-box">
+              <a href="/myStory">
+                <img class="plus-icon" src="/image/plus.png" />
+              </a>
+            </div>
+            <div class="my-mainstory-box">
+            	<a th:if="${mainStoryImages['ONE']} != null"
+            		th:href="@{/StoryDetail(id=${mainStoryIds['ONE']})}"
+            		class="a-mainstory-box">
+	              <img alt="대표스토리 ONE" th:src="${mainStoryImages['ONE']}"/>
+            	</a>
+            </div>
+            <div class="my-mainstory-box">
+           		<a th:if="${mainStoryImages['TWO']} != null"
+            		th:href="@{/StoryDetail(id=${mainStoryIds['TWO']})}"
+            		class="a-mainstory-box">
+	              <img alt="대표스토리 TWO" th:src="${mainStoryImages['TWO']}"/>
+            	</a>
+            </div>
+            <div class="my-mainstory-box">
+            	<a th:if="${mainStoryImages['THREE']} != null"
+            		th:href="@{/StoryDetail(id=${mainStoryIds['THREE']})}"
+            		class="a-mainstory-box">
+	              <img alt="대표스토리 THREE" th:src="${mainStoryImages['THREE']}"/>
+            	</a>
+            </div>
+            <div class="my-mainstory-box">
+            	<a th:if="${mainStoryImages['FORE']} != null"
+            		th:href="@{/StoryDetail(id=${mainStoryIds['FORE']})}"
+            		class="a-mainstory-box">
+	              <img alt="대표스토리 FORE" th:src="${mainStoryImages['FORE']}"/>
+            	</a>
+            </div>
+            <div class="my-mainstory-box">
+            	<a th:if="${mainStoryImages['FIVE']} != null"
+            		th:href="@{/StoryDetail(id=${mainStoryIds['FIVE']})}"
+            		class="a-mainstory-box">
+	              <img alt="대표스토리 FIVE" th:src="${mainStoryImages['FIVE']}"/>
+            	</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 호감 스토리 목록 -->
+        <div th:if="${not #lists.isEmpty(likeStoryList)}">
+        <div class="like-story-wrap">
+          <!-- 추가 -->
+          <div class="like-story-title">
+            나의 좋아요 스토리
+            <img src="/image/colorlinegreen.png" alt="밑줄" />
+          </div>
+          
+          
+          <div class="like-story-area">
+            <div class="left">
+              <img src="/image/left-arrow.png" />
+            </div>
+
+            <div class="like-story-box-area">
+              <div class="like-story-small-box" id="prev-story-box"
+              		th:attr="data-id=${likeStoryList[0].storyId}">
+                <div class="story-img">
+                  <img
+                    src="https://cdn.pixabay.com/photo/2022/01/06/07/25/south-korea-6918828_1280.jpg"
+                  />
+                </div>
+
+                <div class="story-box">
+                  <div class="story-nickname-box">
+                    <div class="story-nickname">0000님의 일정</div>
+                    <img src="/image/heart.png" class="like" />
+                  </div>
+                  <div class="story-title-box">
+                    <div class="story-title">쓸쓸한 강가</div>
+
+                    <div class="story-date">2025.05.24</div>
+                  </div>
+
+                  <div class="story-content">스토리 내용 우다다다다</div>
+                </div>
+              </div>
+
+              <div class="like-story-main-box" id="current-story-box">
+                <div class="story-img">
+                  <img
+                    src="https://cdn.pixabay.com/photo/2024/04/22/16/38/buildings-8713025_1280.jpg"
+                  />
+                </div>
+
+                <div class="story-box">
+                  <div class="story-nickname-box">
+                    <div class="story-nickname">0000님의 일정</div>
+                    <img src="/image/heart.png" class="like" />
+                  </div>
+                  <div class="story-title-box">
+                    <div class="story-title">쓸쓸한 강가</div>
+
+                    <div class="story-date">2025.05.24</div>
+                  </div>
+
+                  <div class="story-content">스토리 내용 우다다다다</div>
+                </div>
+              </div>
+
+              <div class="like-story-small-box" id="next-story-box">
+                <div class="story-img">
+                  <img
+                    src="https://cdn.pixabay.com/photo/2025/04/27/07/01/industry-9562428_1280.jpg"
+                  />
+                </div>
+
+                <div class="story-box">
+                  <div class="story-nickname-box">
+                    <div class="story-nickname">0000님의 일정</div>
+                    <img src="/image/heart.png" class="like" />
+                  </div>
+                  <div class="story-title-box">
+                    <div class="story-title">쓸쓸한 강가</div>
+
+                    <div class="story-date">2025.05.24</div>
+                  </div>
+
+                  <div class="story-content">스토리 내용 우다다다다</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="right"><img src="/image/right-arrow.png" /></div>
+          </div>
+        </div>
+        </div>
+        
+        <div th:if="${#lists.isEmpty(likeStoryList)}">
+        <div class="like-story-wrap">
+	      <div class="like-story-title">
+            나의 좋아요 스토리
+          <img src="/image/colorlinegreen.png" alt="밑줄" />
+          </div>
+  			<p style="padding: 10px; margin-top: 20px;"><a href="/letsmain">Let's로 가서 다른 사람들의 스토리를 둘러보고 좋아요를 눌러보세요!</a></p>
+		</div>
+		</div>
+
+
+
+      </div>
+    </div>
+
+
+</div>
+
+
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    window.likeStories = /*[[${likeStoryList}]]*/ [];
+    window.tripPlans = /*[[${tripPlans}]]*/ [];
+
+    console.log("tripPlans: ", window.tripPlans);
+    /*]]>*/
+  </script>
+
+  <script th:src="@{/javascript/myPage.js}"></script>
+</th:block>
+</body>
+</html>

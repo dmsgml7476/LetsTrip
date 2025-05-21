@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+      
+      
+<head>
+	<link rel="stylesheet" th:href="@{/css/tripDateOption.css}" />
+    <th:block layout:fragment="css">
+       <style>
+       
+       #main {
+       width: 100%;
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       }
+       
+      .calendar {
+  width: 560px;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+}
+.day-box {
+  border: 1px solid black;
+  width: 80px;
+  height: 48px;
+  color: darkolivegreen;
+  background-color: white;
+}
+.calender-area {
+  border: 1px solid black;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  background-image: url(image/tourSymbol.png);
+  background-size: 600px;
+  font-weight: bold;
+  
+  
+
+  align-items: center;
+}
+.arrow {
+  width: 20px;
+  margin: 0 20px;
+}
+.year-month {
+  display: flex;
+  margin: 10px 0;
+  font-size: 30px;
+}
+
+.reverse {
+  transform: scaleY(-1);
+}
+
+.minus-month {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.current-month {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.plus-month {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.selected-start{
+	background-color:#add8e6;
+}
+
+.selected-end{
+	background-color:#87cefa;
+}
+
+.in-range{
+  background-color: #d0eaff;
+}
+
+	
+    </style>
+    </th:block>
+	 <title>Trip</title>
+</head>
+<body>
+
+<div layout:fragment="main" id="main">
+	<!-- 날짜 -->
+   <div id="dateChoice">여행 하실 날짜를 선택하시오</div>
+   <form action = "/tripBasicOption" get="post">
+   		 <div class="calender-area">
+      <div class="year-month">
+        <div class="minus-month">
+          <img class="arrow" src="/image/left-arrow.png" />
+        </div>
+
+        <div class="tripYear">
+          <div class="plus-year">
+            <img class="arrow" src="/image/upperArrow.png" />
+          </div>
+          <div>
+            <div class="current-year">2025년</div>
+          </div>
+          <div class="minus-year">
+            <img class="arrow reverse" src="/image/upperArrow.png" />
+          </div>
+        </div>
+
+        <div class="current-month">5월</div>
+
+        <div class="plus-month">
+          <img class="arrow" src="/image/right-arrow.png" />
+        </div>
+      </div>
+      <div id="cal"></div>
+    </div>
+	<input type="hidden" name="startDate" id="startDateInput"/>
+	<input type="hidden" name="endDate" id="endDateInput"/>
+	<div class="button-area">
+	
+      		<button type="submit" id="toBasic">다음</button>
+	</div>
+   </form>
+   
+   
+
+
+
+</div>
+
+
+<th:block layout:fragment="script">
+
+    <script src="/javascript/tripDate.js"></script>
+</th:block>
+    
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/layout/default}">
+<head>
+	<th:block layout:fragment="css">
+		<link rel="stylesheet" href="/admin/css/csMgmt.css">
+	</th:block>
+
+</head>
+
+<body>
+
+<div layout:fragment="main" id="main">
+    <div class="wrap">
+      <div class="wrap-box">
+        <div class="category">
+          <ul class="category-ul">
+            <div class="category-a-box">
+              <a
+                class="category-link"
+                href=""
+                style="color: black; font-weight: bold"
+                >고객문의</a
+              >
+            </div>
+            <div class="category-a-box"></div>
+            <div class="category-a-box"></div>
+            <div class="category-a-box"></div>
+          </ul>
+        </div>
+
+        <!-- 고객문의 메인 페이지 -->
+
+        <div class="csMgmt-content">
+          <div class="csMgmt-area">
+            <div class="csMgmt-header">
+              <div class="csMgmt-title">
+                <p>고객문의 관리</p>
+              </div>
+            </div>
+
+            <div class="csMgmt-filter-area">
+              <div class="csMgmt-search-area">
+              	<form method="get" th:action="@{/admin/csMgmt}" class="csMgmt-search-area">
+                <div class="search-box">
+                  <img src="/image/search.png" />
+                  <input type="text" name="loginId" placeholer="회원 아이디 검색"  th:value="${loginId}" />
+                </div>
+              	</form>
+              </div>
+
+              <div class="csMgmt-op-area">
+                <div class="csMgmt-op-box">
+                  <select>
+                    <option value="">처리상태</option>
+                    <option value="WAITING">대기</option>
+                    <option value="IN_PROGRESS">처리중</option>
+                    <option value="ANSWERD">답변완료</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div id="csTableArea" class="table-area">
+              <table border="1">
+                <thead>
+                  <tr>
+                    <th class="th-num">번호</th>
+                    <th class="th-date">문의일자</th>
+                    <th class="th-option">옵션</th>
+                    <th class="th-category">카테고리</th>
+                    <th class="th-content">신고내용</th>
+                    <th class="th-status">처리상태</th>
+                  </tr>
+                </thead>
+                <tbody id="csMgmtBody">
+                  <tr th:each="cs, stat : ${csList}" th:if="${stat.index} < 10"
+                  		th:attr="
+                  		data-cs-id=${cs.customerServiceId},
+                  		data-cs-loginId=${cs.loginId},
+                  		data-cs-csOption=${cs.csOption},
+                  		data-cs-category=${cs.category},
+                  		data-cs-questionText=${cs.questionText},
+                  		data-cs-status=${cs.status},
+                  		data-cs-questionTime=${cs.questionTime},
+                  		data-cs-questionDate=${cs.formattedDate},
+                  		data-cs-questionTime=${cs.formattedTime},
+                  		data-cs-answerText=${cs.answerText}
+                  		"
+                  		class="place-row">
+                    <td th:text="${stat.count}" class="td-num">1</td>
+                    <td th:text="${#temporals.format(cs.questionTime, 'yyyy.mm.dd')}">2025.03.11</td>
+                    <td th:text="${cs.csOption}">기타</td>
+                    <td th:text="${cs.category}">스토리</td>
+                    <td th:text="${cs.questionText}">
+                      스토리에 욕을 올린 사람이 있어요. 신고하겠습니다. 무서워요
+                    </td>
+                    <td th:text="${cs.status == null ? '알수없음' :
+             cs.status.name() == 'WAITING' ? '접수' :
+             cs.status.name() == 'IN_PROGRESS' ? '처리중' :
+             cs.status.name() == 'ANSWERED' ? '답변완료' : '알수없음'}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="page-num-box">
+  				<div class="img-btn minus-page" 
+       				th:if="${currentPage >= 5}"
+       				th:href="@{/admin/csMgmt(page=${(currentPage / 5) * 5 - 1}, loginId=${loginId})}">
+    			<img src="/image/left-arrow.png" alt="왼쪽" />
+  				</div>
+
+  				<div class="page-num">
+    				<a th:each="i : ${#numbers.sequence((currentPage / 5) * 5, T(java.lang.Math).min(((currentPage / 5) * 5 + 4), totalPages - 1))}"
+       					th:href="@{/admin/csMgmt(page=${i}, loginId=${loginId})}"
+       					th:text="${i + 1}"
+       					th:classappend="${i} == ${currentPage} ? 'active' : ''">
+    				</a>
+  				</div>
+
+  				<div class="img-btn flus-num"
+       				th:if="${(currentPage / 5 + 1) * 5 < totalPages}"
+       				th:href="@{/admin/csMgmt(page=${(currentPage / 5 + 1) * 5}, loginId=${loginId})}">
+    			<img src="/image/right-arrow.png" alt="오른쪽" />
+  				</div>
+			</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 모달창  -->
+
+      <div id="csMgmtAnsModal" class="modal">
+        <div class="modal-container">
+          <div class="modal-header">
+            <div></div>
+            <h2>고객문의 상세보기</h2>
+            <span class="close" onclick="closeCsMgmtAnsModal()">&times;</span>
+          </div>
+
+          <!-- 고객문의 상세내역 div -->
+          <div class="cs-content">
+            <div class="cs-op-area">
+            
+              <table border="1">
+                <thead>
+                  <th id="modalQuestionDate" class="cs-date">2025.03.11</th>
+                  <th id="modalCsOption" class="cs-option">불편사항</th>
+				  <th id="modalCategory" class="cs-category">스토리</th>
+				  <th id="modalCustomerId" class="cs-customer-id">shinchan</th>
+				  <th id="modalStatus" class="cs-status">처리중</th>
+                </thead>
+
+                <tbody>
+                  <td id="modalQuestionText" class="cs-q-text" colspan="5" style="height: 120px"></td>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 고객문의 처리하기 op 박스 -->
+          <form method="post" name="csAnswer" action="/admin/csMgmt/answer">
+          <input type="hidden" name="csId" id="modalCsId" />
+          <div class="cs-ans-op-area">
+            <div class="cs-ans-title">처리하기</div>
+            <div class="cs-ans-status">
+              <!-- <select>
+                <option value="WAITING">접수</option>
+                <option value="IN_PROGRESS">처리중</option>
+                <option value="ANSWERED">답변완료</option>
+              </select> -->
+            </div>
+          </div>
+
+          <div class="cs-ans-area">
+           <textarea name="answerText" id="modalAnswer" class="cs-ans-textarea" placeholder="답변 내용을 입력하세요."></textarea>
+            <div class="cs-ans-btn-box">
+              <button type="submit" name="status" value="IN_PROGRESS" class="cs-ans-delay">보류</button>
+              <button type="submit" name="status" value="ANSWERED" class="cs-ans-close">전송</button>
+            </div>
+          </div>
+          </form>
+        </div>
+
+
+      <!-- 모달끝 -->
+    </div>
+</div>
+
+<th:block layout:fragment="script">
+	<script th:src="@{/admin/javascript/csMgmt.js}"></script>
+</th:block>
+
+</body>
+</html>

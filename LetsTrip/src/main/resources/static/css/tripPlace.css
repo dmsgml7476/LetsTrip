@@ -1,0 +1,53 @@
+.image-row {
+  display: flex;              /* 가로로 정렬 */
+  justify-content: flex-start; /* 왼쪽부터 정렬 (오른쪽으로 나열됨) */
+  gap: 10px;                  /* 이미지 사이 간격 */
+  margin-top: 10px;
+}
+
+.image-row img {
+  width: 200px;               /* 고정된 너비 */
+  height: 150px;              /* 고정된 높이 */
+  object-fit: cover;          /* 이미지 비율 유지하면서 채우기 */
+  border-radius: 8px;         /* 선택적으로 둥근 테두리 */
+}
+
+.schedule {
+  background-color: #f0f0f0;
+  color: black;
+  border: 1px solid #aaa;
+  padding: 8px 16px;
+  margin: 4px;
+  cursor: pointer;
+}
+
+/* 선택된 버튼 스타일 */
+.schedule.active {
+  background-color: #4CAF50; /* 초록색 */
+  color: white;
+  font-weight: bold;
+}
+
+.next{
+	background-color:purple;
+	color:white;
+}
+
+
+#store{
+	background-color:pink
+}
+
+#finish{
+	background-color:red;
+	color: white;
+}
+
+#placeChoice{
+	display:flex;
+	 justify-content: center;
+	 align-items: center;
+}
+
+
+

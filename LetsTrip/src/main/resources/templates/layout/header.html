@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:fragment="header" id="header">
+
+<nav class="nav-box">
+	<div class="h-wrap">
+        <div class="logo">
+        	<img src="/image/Lets-trip.png" alt="로고" style="width: 200px" />
+        </div>
+
+        <div class="link-box">
+          <ul class="link-ul">
+              <li class="a-box" data-text="메인으로 떠나요">
+                <a class="nav-link" href="/">HOME</a>
+              </li>
+              <li class="a-box" data-text="여행의 추억을 남겨볼까요?">
+                <a class="nav-link" href="/letsmain">Let's</a>
+              </li>
+              <li class="a-box" data-text="여행 일정을 짜보시겠어요?">
+                <a class="nav-link" href="/tripMain">Trip</a>
+              </li>
+            </ul>
+            <div class="line-div">
+              <div class="line-text"></div>
+            </div>
+        </div>
+        <div class="profil-box-area">
+        	<th:block th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+      	  		<div class="admin-page" style="width: 100px">
+        			<div class="a-box admin-page-box">
+        				<a class="nav-link" href="/admin/main">관리자 페이지</a>	
+        			</div>
+          		</div>
+        	</th:block>
+        
+        	<div class="profil-icon-box"
+        		th:if="${not #authorization.expression('hasRole(''ADMIN'')')}"
+        		th:style="${requestUri.startsWith('/mypage')} ? 'visibility: hidden;' : ''">
+        		<th:block th:if="${#authentication.authenticated}">
+					<span >
+						<div class="profil-icon-circle">
+	    					<img th:if="${userDetail != null and !#strings.isEmpty(userDetail.profileImg)}"
+    							th:src="@{/upload/profile/{img}(img=${userDetail.profileImg})}"
+        						alt="프로필"
+        		 				class="profile-icon"
+        	 					onclick="openSideBar()"
+      			    			style="cursor: pointer;"/>
+						</div>
+      			   		<div th:if="${unreadNotificationCount > 0}"
+	      			   		class="notification-badge"
+	      			   		th:text="${unreadNotificationCount}">4</div>
+					</span>
+ 				</th:block>
+
+				<th:block th:if="${#authentication.principal == 'anonymousUser'}">
+ 					<a href="/login">
+    				<img src="/image/user.png"
+       					alt="프로필"
+         				class="profile-icon"
+         				style="cursor: pointer; width: 60px; height: 60px;" />
+  					</a>
+				</th:block>
+	
+        	</div>
+        </div>
+        
+ 	
+        
+        
+            <!-- 사이드바 -->
+        
+        <div
+      		id="sidebar"
+      		class="profile-sidebar"
+	  		th:if="${not requestUri.startsWith('/mypage')}"
+    	>
+      		<div class="sideber-box">
+        		<div class="sidebar-header">
+          			<div class="profil-box">
+          				<div class="profil-icon-circle">
+          					<th:block th:if="${userDetail != null and !#strings.isEmpty(userDetail.profileImg)}">
+            					<img th:src="@{/upload/profile/{img}(img=${userDetail.profileImg})}" alt="프로필" class="profile-icon" />
+         	 				</th:block>
+         	 			</div>
+          
+          				<div class="user-info" th:if="${userDetail != null}">
+          					<div class="nickname" th:text="${nickname}">유자냠냠이</div>
+              				<div class="user-hashtag">
+              					<th:block th:each="tag : ${userHashtags}">
+             						<span th:text="'#' + ${tag}">#태그</span>
+              					</th:block>
+              				</div>
+            			</div>
+      
+          			</div>
+          			<div class="user-op-box">
+            			<div class="mypage"><a href="/mypage/main">마이페이지</a></div>
+            			<div class="setting"><a href="/mypage/edit">설정</a></div>
+            			<a href="/logout" class="logout">로그아웃</a>
+          			</div>
+        		</div>
+
+        		<div class="my-trip-wrap" th:if="${tripTitle != null}">
+          			<div class="my-trip-title">
+            			<p th:text="${tripTitle}">여행 제목</p>
+          			</div>
+          			<div class="d-day">
+            			<p th:text="'D-Day ' + ${dDay}">D-day 5</p>
+          			</div>
+        		</div>
+
+				<div class="alert-area">
+ 			 		<!-- STORY 알림 -->
+ 					<div th:each="notification : ${notifications}" class="alert-box">
+    					<div th:switch="${notification.type.name()}">
+      						<div th:case="'STORY'" th:text="${notification.message + '에 댓글이 달렸습니다.'}"></div>
+      						<div th:case="'TRIP_START'" th:text="${notification.message + ' 일정까지 5일 남았습니다'}"></div>
+      						<div th:case="'CUSTOMER_REPLY'" th:text="'고객센터 답변: ' + ${notification.message}"></div>
+      						<div th:case="*">알 수 없는 알림</div>
+    					</div>
+					</div>
+
+        			<div class="close" onclick="closeSideBar()">
+          				<img src="image/right-arrow.png" alt="닫기" width="20px" />
+        			</div>
+      			</div>
+    		</div>
+  		</div>
+	</div>
+</nav>
+    
+
+    
+    
+    
+
+    
+    
+
+</div>
+
+</body>   
+</html>

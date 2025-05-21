@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+<div th:fragment="header" id="header">
+	
+	 <nav class="nav-box">
+      <div class="h-wrap">
+        <div class="logo">
+        	<img src="/image/Lets-trip.png" alt="로고" style="width: 200px" />
+        </div>
+
+        <div class="link-box">
+          <ul class="link-ul">
+            <div class="a-box">
+              <a class="nav-link" href="/admin/main">HOME</a>
+            </div>
+            <div class="a-box">
+              <a class="nav-link" href="/admin/placeSave">여행지관리</a>
+            </div>
+            <div class="a-box">
+              <a class="nav-link" href="/admin/csMgmt">고객문의</a>
+            </div>
+          </ul>
+        </div>
+       	
+       	<div class="home-link"><a href="/" style="font-size: 30px;">메인</br>홈페이지로</a></div>
+       	
+       	
+      </div>
+    </nav>
+    
+</div>
+
+</body>   
+</html>

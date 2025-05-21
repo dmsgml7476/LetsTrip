@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <th:block layout:fragment="css"></th:block>
+    <link rel=stylesheet th:href="@{/css/finalPlan.css}"/>
+    <th:block layout:fragment="css"></th:block>
+	<title>Trip</title>
+</head>
+<body>
+
+<div layout:fragment="main" id="main">
+
+  
+    <div>
+        <div>
+        	<!-- 링크 -->
+            <p>관광지 링크(사전 예약 필수!!): www.XXX.com</p><br>
+            <p>숙소 사이트:www.ZZZ.com</p><br>
+            <p>식당 예매 사이트:www.yyy.com</p>
+        </div>
+        <button>공유하기</button>
+        <button>수정하기</button>
+    </div>
+    <div>
+    	<img src="/image/finalPlan.jpg"/>
+    </div>
+
+
+</div>
+
+
+<th:block layout:fragment="script"></th:block>
+</body>
+</html>

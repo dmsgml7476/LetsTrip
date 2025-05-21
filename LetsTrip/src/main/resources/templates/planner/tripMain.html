@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <th:block layout:fragment="css">
+    	<link rel="stylesheet" href="/css/tripMain.css">
+    
+    </th:block>
+
+
+		 <title>Trip</title>
+</head>
+<body>
+
+
+
+<div layout:fragment="main" id="main">
+
+<div class="wrap">
+      <div class="content">
+        <div class="tripPlanImage">
+          <img
+            src="https://cdn.pixabay.com/photo/2025/04/28/15/52/travel-9565325_1280.png"
+          />
+        </div>
+        <div class="info">
+          <div class="title">
+            <h2>여행 떠나기</h2>
+          </div>
+          <div class="intro">
+            <p>
+              여행 계획, 막상 짜려니 막막하시죠? Let's trip이 당신의 고민을
+              해결해 드립니다!
+            </p>
+            <p>(1) 떠날 날짜를 정하세요</p>
+            <p>(2) 가고 싶은 지역을 정하세요</p>
+            <p>(3) 당신에게 맞는 여행지를 선택하세요</p>
+            <p>** 그러면 여행 일정 짜기 끝이에요! **</p>
+          </div>
+          <br /><br />
+          <div class="goPlan">
+            <img src="image/goToLink.png" />
+            <a class="goPlanLink" href="/tripDateOption">여행 일정 짜러 가기</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+
+
+<th:block layout:fragment="script"></th:block>
+</body>
+</html>

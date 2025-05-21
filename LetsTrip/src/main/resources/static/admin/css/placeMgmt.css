@@ -1,0 +1,524 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+}
+
+a {
+  color: gray;
+  text-decoration: none;
+}
+
+a:visited {
+  color: gray;
+}
+
+.wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #cfe9ff; 
+}
+
+.wrap-box {
+  width: 900px;
+  background-color: white;
+  border-radius: 30px;
+  margin: 20px 0;
+  height: 700px;
+  display: flex;
+  align-items: stretch;
+}
+
+.category {
+  width: 200px;
+  border-right: 4px solid lightgray;
+  padding: 20px;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-ul {
+  display: flex;
+  width: 100px;
+  height: 660px;
+
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: space-between;
+}
+
+.category-link.active {
+  color: black;
+  font-weight: bold;
+}
+
+/* 관광지 관리 화면 */
+
+.placeMgmt-content {
+  margin: 90px 70px;
+  width: 600px;
+  /* border: 1px solid; */
+}
+
+.placeMgmt-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.placeMgmt-header {
+  display: flex;
+}
+
+.placeMgmt-title {
+  font-size: 30px;
+}
+
+.search-box {
+  height: 35px;
+  border: 2px solid gray;
+  width: 250px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.search-box > img {
+  margin: 0 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.search-box > input {
+  height: 29px;
+  width: 80%;
+  border: none;
+}
+
+.search-box > input:focus {
+  outline: none;
+}
+
+.search-box:focus-within {
+  border: 2px solid black;
+}
+
+.placeMgmt-filter-area > form {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.placeMgmt-op-area {
+  display: flex;
+}
+
+.placeMgmt-op-area > div > select {
+  margin-left: 10px;
+  height: 35px;
+}
+
+.table-area {
+	height: 360px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: center;
+  white-space: nowrap; /* 줄바꿈 방지 */
+  word-break: keep-all; /* 단어 단위로 끊지 않기 */
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+td {
+  border: none;
+  border-bottom: 1px solid black;
+  text-align: center;
+  white-space: nowrap;
+  word-break: keep-all;
+  background-color: white;
+  height: 30px;
+}
+
+.th-num {
+  width: 20px;
+}
+
+.th-upper,
+.th-region {
+  width: 50px;
+}
+
+.th-name {
+  width: 220px;
+}
+
+.td-num {
+  border-right: 1px solid #000;
+}
+
+.page-num-box {
+  margin: 0 auto;
+  margin-top: 20px;
+  display: flex;
+  width: 300px;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.img-btn {
+  display: flex;
+  width: 20px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.img-btn > img {
+  width: 20px;
+}
+
+.page-num {
+  width: 250px;
+  /* border: 1px solid rebeccapurple; */
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* 입력모달내용 */
+
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+
+  background-color: white;
+  width: 650px;
+  height: 410px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.place-detail-area {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.place-detail-box {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.place-op-box {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.place-op-box > div {
+  border: 1px solid;
+  height: 35px;
+  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.place-edit-btn {
+  width: 90px;
+  background-color: rgb(2, 204, 2);
+  border: none;
+  border-radius: 4px;
+  color: white;
+}
+
+.address-box {
+  margin-top: 10px;
+  border: 1px solid;
+  display: flex;
+  height: 35px;
+}
+
+.address-name {
+  width: 50px;
+  border: 0;
+  border-right: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.address-text {
+  display: flex;
+  margin-left: 10px;
+  align-items: center;
+  width: 100%;
+}
+
+.info-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-name {
+  height: 35px;
+  margin: 0 5px;
+  margin-top: 5px;
+  font-size: 18px;
+}
+
+.info-text {
+  border: 1px solid black;
+  height: 130px;
+  padding: 10px;
+}
+
+.name-tel-area {
+  margin-top: 10px;
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.name-box {
+  display: flex;
+  border: 1px solid black;
+  width: 315px;
+}
+
+.place-name-title {
+  border: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid;
+  width: 50px;
+}
+
+.place-name,
+.tel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.tel-box {
+  display: flex;
+  border: 1px solid black;
+  width: 315px;
+}
+
+.tel-title {
+  border-right: 1px solid;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* 수정 모달 */
+
+
+.modal-edit-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  border: 1px solid;
+  background-color: white;
+  width: 650px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+
+.place-edit-op-box {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.place-edit-op-box > div > select {
+  border: 1px solid;
+  height: 35px;
+  width: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.address-edit-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 608px;
+  gap: 0px; /* 간격 제거 */
+}
+
+.address-find-btn {
+  width: 90px;
+  height: 35px;
+  background-color: rgb(2, 204, 2);
+  border: none;
+  border-radius: 4px;
+  color: white;
+  margin-left: 5px
+}
+
+.address-edit-name {
+  width: 50px;
+  height: 35px;
+  border: 0;
+  border-right: 1px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.address-edit-box {
+  display: flex;
+  border: 1px solid;
+  height: 35px;
+  width: 500px;
+  align-items: center;
+}
+
+.address-input {
+  flex: 1; /* ← 남는 공간 꽉 채우기 */
+  height: 30px;
+  border: none;
+  margin-left: 10px;
+}
+
+.address-input:focus {
+  outline: none;
+}
+
+.detail-address-edit-name {
+  height: 100%;
+  width: 110px;
+  border: 0;
+  border-right: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.detail-address-edit-input {
+  height: 35px;
+  width: 100%;
+  border: none;
+  display: flex;
+  align-items: center;
+}
+
+.detail-address-edit-input > input {
+  height: 29px;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 100%;
+  border: none;
+}
+
+.detail-address-edit-input > input:focus {
+  outline: none;
+}
+
+.input-detil-address-area {
+  margin-top: 20px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  border: 1px solid;
+}
+
+.detail-address-name {
+  border: 1px solid;
+  height: 100%;
+}
+
+.detail-address-input {
+  height: 30px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+}
+
+.tel-edit-box {
+	margin-left: 10px;
+	  display: flex;
+  border: 1px solid black;
+  width: 315px;
+}
+
+.tel-edit-title {
+  border-right: 1px solid;
+  width: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.place-name-input,
+.tel-input {
+  margin: 0 10px;
+  width: 100%;
+  border: none;
+}
+
+input:focus {
+  outline: none;
+}

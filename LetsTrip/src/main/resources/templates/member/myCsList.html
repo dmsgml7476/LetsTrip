@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <th:block layout:fragment="css">
+    	<link rel="stylesheet" href="/css/myCsList.css">
+    </th:block>
+
+</head>
+<body>
+
+<div layout:fragment="main" id="main">
+
+
+ <div class="wrap">
+      <div class="wrap-box">
+
+
+        <!-- 고객문의 메인 페이지 -->
+
+        <div class="csMgmt-content">
+          <div class="csMgmt-area">
+            <div class="csMgmt-header">
+              <div class="csMgmt-title">
+                <p>나의 고객 문의</p>
+              </div>
+            </div>
+
+
+            <div class="table-area">
+              <table border="1">
+                <thead>
+                  <tr>
+                    <th class="th-num">번호</th>
+                    <th class="th-date">문의일자</th>
+                    <th class="th-option">옵션</th>
+                    <th class="th-category">카테고리</th>
+                    <th class="th-content">신고내용</th>
+                    <th class="th-status">처리상태</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="cs, stat : ${csList}" th:if="${stat.index} < 10"
+                  	  th:attr="
+                  	  data-cs-id=${cs.customerServiceId},
+                  		data-cs-csOption=${cs.csOption},
+                  		data-cs-category=${cs.category},
+                  		data-cs-questionText=${cs.questionText},
+                  		data-cs-status=${cs.status},
+                  		data-cs-questionTime=${cs.questionTime},
+                  		data-cs-questionDate=${cs.formattedDate},
+                  		data-cs-questionTime=${cs.formattedTime},
+                  		data-cs-answerText=${cs.answerText},
+      					data-cs-answerDate=${cs.answerDate}
+                  	  "
+                  	  class="place-row">
+                    <td th:text="${stat.count}" class="td-num">1</td>
+                    <td th:text="${#temporals.format(cs.questionTime, 'yyyy.mm.dd')}">2025.03.11</td>
+                    <td th:text="${cs.csOption}">기타</td>
+                    <td th:text="${cs.category}">스토리</td>
+                    <td th:text="${cs.questionText}">
+                      스토리에 욕을 올린 사람이 있어요. 신고하겠습니다. 무서워요
+                    </td>
+                    <td th:text="${cs.status == null ? '알수없음' :
+           						  cs.status.name() == 'WAITING' ? '접수' :
+             					  cs.status.name() == 'IN_PROGRESS' ? '처리중' :
+             					  cs.status.name() == 'ANSWERED' ? '답변완료' : '알수없음'}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="page-num-box">
+  <!-- 이전 묶음 화살표 -->
+  <div class="img-btn minus-page" th:if="${currentPageGroup > 1}">
+    <a th:href="@{/mypage/csMyList(page=${(currentPageGroup - 2) * 5 + 1})}">
+      <img src="/image/left-arrow.png" alt="왼쪽" />
+    </a>
+  </div>
+
+  <!-- 숫자 페이지 -->
+  <div class="page-num">
+    <a th:each="i : ${#numbers.sequence((currentPageGroup - 1) * 5 + 1, T(java.lang.Math).min(currentPageGroup * 5, totalPages))}"
+       th:href="@{/mypage/csMyList(page=${i})}"
+       th:text="${i}"
+       th:classappend="${i == currentPage} ? 'active' : ''">
+    </a>
+  </div>
+
+  <!-- 다음 묶음 화살표 -->
+  <div class="img-btn flus-num" th:if="${currentPageGroup * 5 < totalPages}">
+    <a th:href="@{/mypage/csMyList(page=${currentPageGroup * 5 + 1})}">
+      <img src="/image/right-arrow.png" alt="오른쪽" />
+    </a>
+  </div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+
+            <!-- 모달창  -->
+
+      <div id="csDetailModal" class="modal">
+        <div class="modal-container">
+          <div class="modal-header">
+            <div></div>
+            <h2>고객문의 상세보기</h2>
+            <span class="close" onclick="closeCsDetailModal()">&times;</span>
+          </div>
+
+          <!-- 고객문의 상세내역 div -->
+          <div class="cs-content">
+            <div class="cs-op-area">
+              <table border="1">
+                <thead>
+                  <th id="modalQuestionDate" class="cs-date">2025.03.11</th>
+                  <th id="modalCsOption" class="cs-option">불편사항</th>
+                  <th id="modalCategory" class="cs-category">스토리</th>
+                  <th id="modalStatus" class="cs-status">처리중</th>
+                </thead>
+
+                <tbody>
+                  <td id="modalQuestionText" class="cs-q-text" colspan="4" style="height: 120px"></td>
+                  </td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 고객문의 처리하기 op 박스 -->
+          <div class="cs-ans-op-area">
+            <div class="cs-ans-title">처리결과</div>
+            <div class="cs-ans-date-box">
+              <p>답변일</p>
+              <div class="cs-ans-date">2025.03.12</div>
+            </div>
+     
+          </div>
+
+          <div class="cs-ans-area">
+            <div class="cs-ans-text">안녕하세요 고객님 정신적충격이 아주 커보이는 군요 안타깝다.</div>
+         
+          </div>
+        </div>
+
+
+      <!-- 모달끝 -->
+    </div>
+	
+</div>
+	<th:block layout:fragment="script">
+    	<script th:src="@{/javascript/myCsList.js}"></script> <!-- 실제 js 경로로 수정 -->
+	</th:block>
+</body>
+</html>

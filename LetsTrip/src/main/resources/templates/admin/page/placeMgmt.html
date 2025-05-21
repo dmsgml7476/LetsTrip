@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/layout/default}">
+<head>
+	<th:block layout:fragment="css">
+		<link rel="stylesheet" href="/admin/css/placeMgmt.css">
+	</th:block>
+
+</head>
+
+<body>
+
+<div layout:fragment="main" id="main">
+<div class="wrap">
+      <div class="wrap-box">
+        <div class="category">
+          <ul class="category-ul">
+            <div class="category-a-box">
+              <a
+                class="category-link"
+                href="/admin/placeSave"
+                >등록</a
+              >
+            </div>
+            <div class="category-a-box">
+              <a class="category-link" href="/admin/placeMgmt/tourSpot" >관광지</a>
+            </div>
+            <div class="category-a-box">
+              <a class="category-link" href="/admin/placeMgmt/hotel">숙소</a>
+            </div>
+            <div class="category-a-box">
+              <a class="category-link" href="/admin/placeMgmt/restaurant">식당</a>
+            </div>
+          </ul>
+        </div>
+
+        <!-- 여행 관리 메인 페이지 -->
+
+        <div class="placeMgmt-content">
+          <div class="placeMgmt-area">
+            <div class="placeMgmt-header">
+              <div class="placeMgmt-title">
+                <p>관광지 관리</p>
+              </div>
+            </div>
+
+            <div class="placeMgmt-filter-area">
+            
+              <form method="get" th:action="@{/admin/placeMgmt/{category}(category=${category})}" id="filterForm">
+              <div class="placeMgmt-search-area">
+                <div class="search-box">
+                  <img src="/image/search.png" />
+                  <input type="text" name="keyword" placeholer="관광지 이름 검색"
+                  		 th:value="${keyword}"/>
+                </div>
+              </div>
+
+              <div class="placeMgmt-op-area">
+				
+				<input type="hidden" id="categoryName" th:value="${categoryName}" />
+				
+                	<div class="upper-region-box">
+                 		<select id="upperRegionSelect" name="upperRegion" th:value="${upperRegion}" th:attr="data-selected=${upperRegion}">
+                      		<option value="">상위 지역</option>
+                      		<th:block th:each="region : ${regionList}">
+                        		<option
+                          			th:value="${region.upperRegion}"
+                          			th:text="${region.upperRegion}"
+                          			th:selected="${region.upperRegion == upperRegion}"
+                        		></option>
+                      		</th:block>
+                    	</select>
+                   </div>
+                   <div class="region-box">
+                  		<select id="subRegionSelect" name="regionId" th:attr="data-selected=${regionId}">
+                      		<option value="">세부 지역</option>
+                      		<th:block th:each="region : ${regionList}">
+								<option th:value="${region.regionId}" th:text="${region.regionName}"
+								th:selected="${region.regionId == regionId}"></option>
+                      		</th:block>
+                   		</select>
+                  </div>
+                
+              </div>
+              </form>
+            
+            </div>
+            
+            <!-- 테이블영역 -->
+            
+            <div id="placeTableArea" class="table-area">
+              <table border="1">
+                <thead>
+                  <tr>
+                    <th class="th-num">번호</th>
+                    <th class="th-upper">상위 지역</th>
+                    <th class="th-region">세부 지역</th>
+                    <th class="th-name">관광지 이름</th>
+                    <th class="th-tel">전화번호</th>
+                  </tr>
+                </thead>
+                <tbody id="placeTableBody">
+                  <tr th:each="place, stat : ${placeList}" th:if="${stat.index} < 10"
+           	       	 th:attr="
+      					data-place-id=${place.placeId},
+      					data-place-name=${place.placeName},
+      					data-place-tel=${place.placeTel},
+      					data-upper-region=${place.upperRegion},
+      					data-region-name=${place.regionName},
+      					data-address=${place.placeAddress},
+      					data-info=${place.placeInfo},
+      					data-category-type=${place.categoryName}"
+   					  class="place-row">
+                    <td th:text="${stat.count}" class="td-num">1</td>
+                    <td th:text="${place.upperRegion}">경기도</td>
+                    <td th:text="${place.regionName}">가평</td>
+                    <td th:text="${place.placeName}">지리삼</td>
+                    <td th:text="${place.placeTel}">031-580-4832</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="page-num-box">
+              <div class="img-btn minus-page">
+              	<a th:href="@{/admin/placeMgmt/{category}(category=${category}, upperRegion=${upperRegion}, regionId=${regionId}, keyword=${keyword}, page=${startPage - 1})}"
+     			   th:if="${startPage > 1}">
+                <img src="/image/left-arrow.png" alt="왼쪽" />
+              </div>
+              <div class="page-num">
+                <th:block th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+     				 <a th:href="@{/admin/placeMgmt/{category}(category=${category}, upperRegion=${upperRegion}, regionId=${regionId}, keyword=${keyword}, page=${pageNum - 1})}"
+      				    th:text="${pageNum}"
+       					th:classappend="${pageNum == currentPage + 1} ? 'active'">1</a>
+    			</th:block>
+              </div>
+              <div class="img-btn flus-num">
+             	 <a th:href="@{/admin/placeMgmt/{category}(category=${category}, upperRegion=${upperRegion}, regionId=${regionId}, keyword=${keyword}, page=${endPage})}"
+      				 th:if="${endPage < totalPages}">
+                <img src="/image/right-arrow.png" alt="오른쪽" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 관리 모달 -->
+
+          <div id="showDetailModal" class="modal">
+            <div class="modal-container">
+              <div class="modal-header">
+                <div></div>
+                <h2>여행지 관리</h2>
+                <span class="close" onclick="closeShowDetailModal()"
+                  >&times;</span
+                >
+              </div>
+
+              <div class="place-detail-area">
+                <div class="place-detail-box">
+                  <div class="place-op-box">
+                    <div class="place-cate">
+                      <p id="modalCategory">유형</p>
+                    </div>
+
+                    <div class="place-region">
+                      <p id="modalUpperRegion">상위 지역</p>
+                    </div>
+
+                    <div class="place-region">
+                      <p id="modalRegion">세부 지역</p>
+                    </div>
+                  </div>
+
+                  <button class="place-edit-btn" onclick="nextToEditModal()">수정하기</button>
+                </div>
+                <!-- 주소 입력 -->
+
+                <div class="address-box">
+                  <div class="address-name">주소</div>
+                  <div class="address-text" id="modalAddress">경기도어쩌구저쩌구</div>
+                </div>
+
+                <!-- 정보 입력 -->
+
+                <div class="info-area">
+                  <div class="info-name">정보</div>
+                  <div class="info-text" id="modalInfo">여행지 정보 어쩌구저쩌구</div>
+                </div>
+
+                <div class="name-tel-area">
+                  <div class="name-box">
+                    <div class="place-name-title">이름</div>
+                    <div class="place-name" id="modalPlaceName">여행지명</div>
+                  </div>
+
+                  <div class="tel-box">
+                    <div class="tel-title">전화번호</div>
+                    <div class="tel" id="modalPlaceTel">전화번호</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 모달끝 -->
+          
+          
+                    <!-- 수정모달시작 -->
+
+          <div id="editModal" class="modal">
+            <div class="modal-edit-container">
+              <div class="modal-header">
+                <div></div>
+                <h2>여행지 관리</h2>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+              </div>
+
+              <div class="place-detail-area">
+                <div class="place-detail-box">
+                  <div class="place-edit-op-box">
+                    <div class="place-cate">
+                      <select name="categoryType" id="editCategoryType">
+                        <option value="">유형</option>
+                        <option value="1">관광지</option>
+                        <option value="2">숙소</option>
+                        <option value="3">식당</option>
+                      </select>
+                    </div>
+
+                    <div class="place-region">
+                      <select id="editUpperRegionSelect">
+                        <option value="">상위 지역</option>
+                        <th:block th:each="region : ${regionList}">
+                          <option
+                            th:value="${region.upperRegion}"
+                            th:text="${region.upperRegion}"
+                          ></option>
+                        </th:block>
+                      </select>
+                    </div>
+
+                    <div class="place-region">
+                      <select id="editSubRegionSelect" name="regionId">
+                        <option value="">세부 지역</option>
+                        <th:block th:each="region : ${regionList}">
+                          <option
+                            th:value="${region.regionName}"
+                            th:text="${region.regionName}"
+                          ></option>
+                        </th:block>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button class="edit place-edit-btn" type="submit">
+                    저장하기
+                  </button>
+                </div>
+                <!-- 주소 입력 -->
+                <div class="address-edit-area">
+                  <div class="address-edit-box">
+                    <div class="address-edit-name">주소</div>
+                    <input
+                      class="address-input"
+                      type="text"
+                      id="editAddress"
+                    />
+                  </div>
+                  <input
+                    class="address-find-btn"
+                    type="button"
+                    onclick="sample6_execDaumPostcode()"
+                    value="주소 찾기"
+                  />
+                </div>
+
+                <div class="input-detil-address-area">
+                  <div class="detail-address-edit-name">상세 주소</div>
+                  <div class="detail-address-edit-input">
+                    <input
+                      type="text"
+                      id="editDetailAddress"
+                      name="detailAddress"
+                    />
+                  </div>
+                </div>
+                <input
+                  type="hidden"
+                  id="hiddenUpperRegion"
+                  name="upperRegion"
+                />
+                <input type="hidden" id="fullAddress" name="placeAddress" />
+                <input
+                  type="hidden"
+                  id="searchableAddress"
+                  name="searchableAddress"
+                />
+
+                <!-- 정보 입력 -->
+
+                <div class="info-area">
+                  <div class="info-name">정보</div>
+                  <textarea
+                  	id="editPlaceInfo"
+                    class="info-text"
+                    name="placeInfo"
+                    style="resize: none"
+                  ></textarea>
+                </div>
+
+                <div class="name-tel-area">
+                  <div class="name-box">
+                    <div class="place-name-title">이름</div>
+                    <input id="editPlaceName" class="place-name-input" name="placeName" />
+                  </div>
+
+                  <div class="tel-edit-box">
+                    <div class="tel-edit-title">전화번호</div>
+                    <input id="editTel" class="tel-input" name="tel" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 수정모달 끝 -->
+          
+          
+        </div>
+      </div>
+    </div>
+
+
+
+</div>
+
+<th:block layout:fragment="script">
+	<script th:inline="javascript">
+	window.regionList = /*[[${regionList}]]*/ [];
+	</script>
+	
+	
+	<script th:src="@{/admin/javascript/placeMgmt.js}"></script>
+</th:block>
+
+</body>
+</html>

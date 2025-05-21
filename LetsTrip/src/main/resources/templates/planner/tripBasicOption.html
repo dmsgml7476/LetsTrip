@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/tripBasicOption.css}" />
+
+    </th:block>
+
+	 <title>Trip</title>
+</head>
+<body>
+
+<div layout:fragment="main" id="main">
+
+  
+ <div id="basicOption1">
+      <!-- 여행 기본 정보 선택  -->
+      <div>
+        <div>
+          <!-- 여행지역 선택 영역 수정확인! -->
+          <h3>여행지역 선택</h3>
+          <img src="/image/koreaMap.PNG" alt="지역 지도" width="400"> 
+          <div>
+          <form id="regionForm", action="/tripStep2" method="POST">
+          	<select id="mainRegion" name="mainRegion" required>
+              <option value="">상위 지역</option>
+              	<th:block th:each="region : ${regionList}">
+                	<option
+                          th:value="${region.upperRegionName}"
+                          th:text="${region.upperRegionName}"
+                        ></option>s
+                </th:block>
+             </select>
+
+          	 <select id="subRegion" name="subRegion" required>
+            	<option value="">세부 지역</option>
+                      <th:block th:each="region : ${regionList}">
+						<option th:value="${region.regionId}" th:text="${region.regionName}"></option>
+                      </th:block>
+             </select>
+            
+             <input class="regionInput" type="hidden" name="regionId" id="regionIdInput">
+             <button type="submit" class="toPlaceList">다음</button>
+          
+        	 <div>
+          		<!--여행 인원 선택-->
+          	 <label> 여행인원 선택 </label>
+          		<input type="number" />
+        	 </div>
+        	 <div>
+          		<!-- 교통수단 선택-->
+          		<label>교통수단</label>
+          		<select id="vehicleSelect"	name="vehicleId" required>
+            		<option value="">선택</option>
+            		<option value="1">자가용</option>
+            		<option value="2">랜트카</option>
+
+          		</select>
+        		</div>  
+          
+          	</form>
+           </div>
+        </div>
+        </div>
+        
+      </div>
+
+
+	
+
+
+
+</div>
+
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+    	window.regionList = /*[[${regionList}]]*/ [];
+    	console.log("🟢 JS regionList 확인:", window.regionList);
+    </script>
+    <script src="/javascript/tripBasicOption.js"></script>
+</th:block>
+    
+</body>
+</html>

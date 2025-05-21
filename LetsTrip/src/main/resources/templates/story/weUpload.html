@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+<title>Insert title here</title>
+
+<style>
+  .hidden-input {
+    display: none;
+  }
+
+  .horizontal-button {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .horizontal-button:hover {
+    background-color: #eaeaea;
+  }
+
+  .icon-button-nobg {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+
+  .icon-button-nobg:hover {
+    color: #8266ff;
+  }
+
+  .submit-button {
+    background-color: #8266ff;
+    color: white;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .submit-button:hover {
+    background-color: #6f55e0;
+  }
+
+  .submit-button.cancel {
+    background-color: #ddd;
+    color: black;
+    margin-right: 10px;
+  }
+
+  .submit-button.cancel:hover {
+    background-color: #ccc;
+  }
+
+  #tag-results div {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: 3px;
+    cursor: pointer;
+  }
+
+  #tag-results div:hover {
+    background-color: #ddd;
+  }
+</style>
+
+</head>
+<body>
+		<th:block th:replace="story/mainMenu :: mainMenu"></th:block>
+
+  			<div style="width: 70vw; margin: 40px auto; padding: 20px; border-radius: 10px; font-family: sans-serif; background: #fafafa;">
+  
+  <!-- 글 작성 영역 -->
+  <form th:action="@{/weUpload}" th:object="${boardFormDto}" method="post" enctype="multipart/form-data">
+  <textarea
+    id="text-input"
+    placeholder="호앵님의 이야기를 기다리고 있어요."
+    style="width: 100%; height: 360px; padding: 1em; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box;"></textarea>
+
+  <!-- 첨부 파일 버튼들 (가로) -->
+  <div style="display: flex; gap: 10px; margin-top: 15px;">
+    <label class="horizontal-button">📷 사진/동영상
+      <input type="file" accept="image/*,video/*" class="hidden-input">
+    </label>
+    <label class="horizontal-button">📁 MY플래너
+      <input type="file" accept="image/*" class="hidden-input">
+    </label>
+    <label class="horizontal-button" id="link-toggle">🔗 링크</label>
+  </div>
+
+  <!-- 링크 입력창 + 저장 -->
+  <div id="link-input-container" style="display: none; margin-top: 10px;">
+    <input type="url" id="link-url" placeholder="여행플래너 URL 입력" style="padding: 8px; width: 80%; border: 1px solid #ccc; border-radius: 6px;">
+    <button onclick="saveLink()" class="submit-button" style="margin-left: 8px; padding: 8px 12px;">저장</button>
+  </div>
+
+  <!-- 공개, 댓글, 태그, 위치 -->
+  <div style="display: flex; align-items: center; margin-top: 20px; gap: 10px; flex-wrap: wrap;">
+    <select style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc;">
+      <option>🌐 전체공개</option>
+      <option>👥 일부공개</option>
+      <option>🔒 비공개</option>
+    </select>
+
+    <select style="padding: 6px 12px; border-radius: 6px; border: 1px solid #ccc;">
+      <option>💬 댓글 허용</option>
+      <option>🚫 댓글 비허용</option>
+    </select>
+
+    <button onclick="toggleTagSearch()" class="icon-button-nobg">👤</button>
+    <button onclick="showLocationChoice()" class="icon-button-nobg">📍</button>
+  </div>
+
+  <!-- 친구 태그 검색 -->
+  <div id="tag-search-box" style="display: none; margin-top: 10px;">
+    <input type="text" id="tag-input" placeholder="@아이디 입력" style="padding: 6px; width: 40%; border-radius: 6px; border: 1px solid #ccc;" onkeyup="searchUser()">
+    <div id="tag-results" style="margin-top: 5px;"></div>
+  </div>
+
+  <!-- 첨부된 링크 출력 -->
+  <div id="saved-link-container" style="margin-top: 30px;"></div>
+
+  <!-- 하단 버튼 -->
+  <div style="margin-top: 25px; text-align: right;">
+    <button onclick="cancelPost()" class="submit-button cancel">취소</button>
+    <button onclick="submitPost()" class="submit-button">올리기</button>
+  </div>
+</div>
+</form>
+
+<script>
+  const mockUsers = ['@hong123', '@kim_travel', '@leeho', '@travel_love'];
+
+  // 글 입력 초기화
+  document.getElementById('text-input').addEventListener('focus', function () {
+    if (this.value === '호앵님의 이야기를 기다리고 있어요.') this.value = '';
+  });
+
+  // 링크 입력창 열기
+  document.getElementById('link-toggle').addEventListener('click', () => {
+    const box = document.getElementById('link-input-container');
+    box.style.display = box.style.display === 'none' ? 'block' : 'none';
+  });
+
+  // 링크 저장 및 하단 출력
+  function saveLink() {
+    const link = document.getElementById('link-url').value;
+    if (link) {
+      document.getElementById('saved-link-container').innerHTML =
+        `<p>🔗 추가된 링크: <a href="${link}" target="_blank">${link}</a></p>`;
+      document.getElementById('link-url').value = '';
+      document.getElementById('link-input-container').style.display = 'none';
+    }
+  }
+
+  // 친구 태그 토글
+  function toggleTagSearch() {
+    const tagBox = document.getElementById('tag-search-box');
+    tagBox.style.display = tagBox.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // 친구 아이디 자동완성 검색
+  function searchUser() {
+    const input = document.getElementById('tag-input').value.toLowerCase();
+    const resultBox = document.getElementById('tag-results');
+    resultBox.innerHTML = '';
+    if (input.startsWith('@')) {
+      const results = mockUsers.filter(u => u.includes(input));
+      results.forEach(user => {
+        const div = document.createElement('div');
+        div.textContent = user;
+        div.onclick = () => {
+          document.getElementById('tag-input').value = user;
+          resultBox.innerHTML = '';
+        };
+        resultBox.appendChild(div);
+      });
+    }
+  }
+  // 위치 alert
+  function showLocationChoice() {
+  const allow = confirm("위치 접근을 허용하시겠습니까?");
+  if (allow) {
+    alert("위치 접근이 허용되었습니다.");
+  } else {
+    alert("위치 접근이 거부되었습니다.");
+  }
+}
+
+  // 취소 / 올리기
+  function cancelPost() {
+    alert("작성 내용이 임시 저장되었습니다.");
+    window.location.href = "/weStory";
+  }
+
+  function submitPost() {
+    alert("스토리가 업로드되었습니다.");
+    window.location.href = "/myStory";
+  }
+</script>
+		
+		
+		<th:block th:replace="story/mainFooter :: mainFooter"></th:block>
+
+</body>
+</html>
