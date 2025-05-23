@@ -42,16 +42,21 @@ public class MainController {
 
 	@GetMapping("/")
 	public String showMainPage(Model model, @AuthenticationPrincipal CustomUserDetails userDetails, HttpServletRequest request) {
+		
+		
 		model.addAttribute("requestUri", request.getRequestURI());
+		
+		
 		List<RecommendStoryDto> storyList;
 	    
 	    if (userDetails != null) {
 	        Long userId = userDetails.getUser().getId();
-	        storyList = recommendStoryService.getRecommendedStoriesForUser(userId);
-
+	        
 	        // 여기서 Fetch Join 사용!
 	        UserEntity user = userRepository.findWithHashtagsById(userId)
 	                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+	        
+	        storyList = recommendStoryService.getRecommendedStoriesForUser(userId);
 
 	        UserDetailEntity detail = user.getUserDetail();
 	        model.addAttribute("userDetail", detail);

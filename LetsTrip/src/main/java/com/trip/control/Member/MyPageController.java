@@ -74,6 +74,7 @@ public class MyPageController {
 		
 		model.addAttribute("requestUri", request.getRequestURI());
 		if (userDetails != null) {	
+		
 			UserEntity user= userDetails.getUser();
 			model.addAttribute("user", user);
 			Long userId	= user.getId()	;

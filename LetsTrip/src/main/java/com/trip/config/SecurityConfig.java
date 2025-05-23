@@ -41,7 +41,7 @@ public class SecurityConfig {
 		        			            return;
 		        			        }
 		        			    }
-		        				// 이전 요청이 저장되어 있는지 확인
+		        				// 이전 요청이 저장되어 있는지 확인 (인증이 필요한 페이지에 인증 없이 들어갔을때 주소 저장)
 				                        SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request, response);
 		
 				                        if (savedRequest != null) {

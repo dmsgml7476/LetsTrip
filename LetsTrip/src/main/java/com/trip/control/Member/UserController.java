@@ -35,7 +35,7 @@ public class UserController {
     	    }
     	 if (redirect != null) {
     	        session.setAttribute("redirectAfterLogin", redirect);
-    	    }
+    	    }      
     	return "member/signIn";
     }
     
