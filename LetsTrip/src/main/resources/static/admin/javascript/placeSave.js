@@ -63,11 +63,13 @@ console.log("✅ placeSave.js 실행됨");
 	  }
 	}
 	return address;
-	}
+}
 	
 
+
+
 	
-	function sample6_execDaumPostcode() {
+function sample6_execDaumPostcode() {
 	  new daum.Postcode({
 	    oncomplete: function (data) {
 	      if (!data.roadAddress) {
@@ -82,20 +84,61 @@ console.log("✅ placeSave.js 실행됨");
 	      document.getElementById('sample6_detailAddress').focus();
 	    }
 	  }).open();
-	}
+}
   
-	window.prepareFullAddressBeforeSubmit = function () {
+document.getElementById('placeForm').addEventListener('submit', async function(e) {
+	e.preventDefault(); // 기본 제출 막기
 
-	  const baseAddr = document.getElementById('sample6_address').value.trim();
-	  const detail = document.getElementById('sample6_detailAddress').value.trim();
-	  const fullAddress = baseAddr + ' ' + detail;
+	const baseAddr = document.getElementById('sample6_address').value.trim();
+	const detail = document.getElementById('sample6_detailAddress').value.trim();
+	const fullAddress = baseAddr + ' ' + detail;
 
-	  document.getElementById('fullAddress').value = fullAddress;
+	document.getElementById('searchableAddress').value = baseAddr;
+	document.getElementById('fullAddress').value = fullAddress;
+	document.getElementById('hiddenUpperRegion').value = document.getElementById('upperRegionSelect').value;
 
-	  const selectedUpper = document.getElementById('upperRegionSelect').value;
-	  document.getElementById('hiddenUpperRegion').value = selectedUpper;
+	console.log("✅ 사용자용 주소:", fullAddress);
 
-	  console.log("✅ 사용자용 주소:", fullAddress);
+	const coords = await getCoordinatesByAddress(fullAddress);
+	if (coords) {
+	  document.getElementById('placeLongitude').value = parseFloat(coords.x);
+	  document.getElementById('placeLatitude').value = parseFloat(coords.y);
+	  console.log("✅ 좌표 변환 결과:", coords.x, coords.y);
+	  this.submit(); // 수동 제출
+	} else {
+	  alert("❗ 좌표 변환 실패, 주소를 다시 확인해주세요.");
+	}
+});
 
-	  return true;
-	};
+async function getCoordinatesByAddress(address) {
+	const REST_API_KEY = "a0236729e2cb8a54778ce31764275121";
+	const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
+	
+	try {
+		console.log("📌 요청 시작", url);
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				Authorization: `KakaoAK ${REST_API_KEY}`
+			}
+		});
+		
+		const data = await response.json();
+		console.log("📌 카카오 응답 데이터:", data);
+		
+		if (data.documents.length > 0) {
+			const x = data.documents[0].x;
+			const y = data.documents[0].y;
+			
+			return {x, y};
+		} else {
+			alert("좌표를 찾을 수 없습니다. 주소를 다시 확인해주세요.");
+			return null;
+		}
+	} catch(error) {
+		console.error("좌표 변환 중 오류 발생 : ", error);
+		return null;
+	}
+}
+
+

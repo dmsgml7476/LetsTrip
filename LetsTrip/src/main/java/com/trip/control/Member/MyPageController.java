@@ -116,7 +116,8 @@ public class MyPageController {
 			// 내가 좋아요 누른 스토리 목록 추가 
 			
 			List<LikedStoryDto> likedStories = myPageService.getLikedStories(userId);
-		        model.addAttribute("likeStoryList", likedStories);
+		    
+		    model.addAttribute("likeStoryList", likedStories);
 		        
 		        
 		     // 캘린더

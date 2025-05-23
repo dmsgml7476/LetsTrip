@@ -14,5 +14,7 @@ public class PlaceSaveDto {
 	private String upperRegion;
 	private Long regionId;
 	private Integer categoryType;
+	private Float placeLatitude;
+	private Float placeLongitude;
 	
 }

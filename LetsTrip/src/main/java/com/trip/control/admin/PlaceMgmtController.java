@@ -52,6 +52,9 @@ public class PlaceMgmtController {
 	public String savePlace(@ModelAttribute PlaceSaveDto dto) {
 		placeMgmtService.savePlace(dto);
 		
+	    System.out.println("위도: " + dto.getPlaceLatitude());
+	    System.out.println("경도: " + dto.getPlaceLongitude());
+		
 		return "redirect:/admin/placeSave";
 	}
 	

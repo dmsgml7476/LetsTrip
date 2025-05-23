@@ -29,8 +29,8 @@ public class PlaceEntity {
 	private String placeName;
 	private String placeAddress;
 	private String placeInfo;
-	private float placeLatitude;
-	private float placeLongitude;
+	private Float placeLatitude;
+	private Float placeLongitude;
 	private String placeTel;
 	private LocalDate createDate;
 	private LocalDate placeModifiedDate;
@@ -46,6 +46,9 @@ public class PlaceEntity {
 		place.setCategory(category);
 		place.setCreateDate(LocalDate.now());
 		place.setPlaceModifiedDate(LocalDate.now());
+		
+	    place.setPlaceLatitude(dto.getPlaceLatitude());
+	    place.setPlaceLongitude(dto.getPlaceLongitude());
 		return place;
 	}
 	

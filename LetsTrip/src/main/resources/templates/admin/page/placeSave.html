@@ -44,7 +44,7 @@
             <div class="mgmt-title">
               <p>여행지 등록하기</p>
             </div>
-            <form action="/admin/place/save" method="post" onsubmit="return prepareFullAddressBeforeSubmit();">
+            <form action="/admin/place/save" method="post" id="placeForm">
               <div class="mgmt-op-box">
                 <div class="place-op-box">
                   <div class="place-cate">
@@ -72,7 +72,7 @@
                     <select id="subRegionSelect" name="regionId">
                       <option value="">세부 지역</option>
                       <th:block th:each="region : ${regionList}">
-						<option th:value="${region.regionName}" th:text="${region.regionName}"></option>
+						<option th:value="${region.regionId}" th:text="${region.regionName}"></option>
                       </th:block>
                     </select>
                   </div>
@@ -102,6 +102,8 @@
               <input type="hidden" id="hiddenUpperRegion" name="upperRegion" />
               <input type="hidden" id="fullAddress" name="placeAddress" />
               <input type="hidden" id="searchableAddress" name="searchableAddress" />
+              <input type="hidden" id="placeLongitude" name="placeLongitude">
+			  <input type="hidden" id="placeLatitude" name="placeLatitude">
 
               <!-- 정보 입력 -->
 
@@ -148,14 +150,6 @@
 
 
 		} */
-		
-		function testSubmit() {
-			  const upper = document.getElementById('upperRegionSelect').value;
-			  const region = document.getElementById('subRegionSelect').value;
-
-			  alert("💬 제출 전 확인: upper=" + upper + ", region=" + region);
-			  return true; // 반드시 return true 해야 전송됨
-			}
 		
 		
 	</script>
