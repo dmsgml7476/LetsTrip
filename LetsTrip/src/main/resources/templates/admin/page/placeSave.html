@@ -132,29 +132,12 @@
     </div>
 </div>
 <th:block layout:fragment="script">
-	<script th:inline="javascript">
-	window.regionList = /*[[${regionList}]]*/ [];
-	console.log("🟢 JS regionList 확인:", window.regionList);
-	</script>
-	
-	
-	
-	<script>
-/* 		function prepareFullAddressBeforeSubmit() {
-			const addr = document.getElementById('sample6_address').value;
-			const detail = document.getElementById('sample6_detailAddress').value;
-			document.getElementById('fullAddress').value = addr + ' ' + detail;
-
-			const selectedUpper = document.getElementById('upperRegionSelect').value;
-			document.getElementById('hiddenUpperRegion').value = selectedUpper;
-
-
-		} */
-		
-		
-	</script>
-	
-	<script th:src="@{/admin/javascript/placeSave.js}"></script>
+  <script th:inline="javascript">
+    window.REST_API_KEY = /*[['${kakaoApiKey}']]*/ "";
+    window.regionList = /*[[${regionList}]]*/ [];
+    console.log("🟢 JS regionList 확인:", window.regionList);
+  </script>
+  <script th:src="@{/admin/javascript/placeSave.js}"></script>
 </th:block>
 
 </body>

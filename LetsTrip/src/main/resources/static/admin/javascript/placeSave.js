@@ -111,7 +111,8 @@ document.getElementById('placeForm').addEventListener('submit', async function(e
 });
 
 async function getCoordinatesByAddress(address) {
-	const REST_API_KEY = "a0236729e2cb8a54778ce31764275121";
+
+    const REST_API_KEY = window.REST_API_KEY;
 	const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(address)}`;
 	
 	try {

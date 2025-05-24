@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,8 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.trip.dto.admin.PlaceListDto;
 import com.trip.dto.admin.PlaceSaveDto;
 import com.trip.dto.admin.RegionDto;
-import com.trip.entity.Planner.PlaceEntity;
-import com.trip.entity.Planner.RegionEntity;
+
 import com.trip.repository.Planner.PlaceRepository;
 import com.trip.repository.Planner.RegionRepository;
 import com.trip.service.admin.PlaceMgmtService;
@@ -35,7 +35,9 @@ public class PlaceMgmtController {
 	private final RegionRepository regionRepository;
 	private final PlaceRepository placeRepository;
 	private final PlaceMgmtService placeMgmtService;
-
+	
+	@Value("${kakao.api.key}")
+	private String kakaoApiKey;
 	
 	@GetMapping("/placeSave")
 	public String placeSavePage(Model model) {
@@ -45,11 +47,12 @@ public class PlaceMgmtController {
 				.collect(Collectors.toList());
 		
 		model.addAttribute("regionList", regionList);
+		model.addAttribute("kakaoApiKey", kakaoApiKey);
 		return "admin/page/placeSave";
 	}
 	
 	@PostMapping("/place/save")
-	public String savePlace(@ModelAttribute PlaceSaveDto dto) {
+	public String savePlace(@ModelAttribute PlaceSaveDto dto, Model model) {
 		placeMgmtService.savePlace(dto);
 		
 	    System.out.println("위도: " + dto.getPlaceLatitude());
