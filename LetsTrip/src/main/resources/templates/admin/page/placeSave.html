@@ -132,8 +132,10 @@
     </div>
 </div>
 <th:block layout:fragment="script">
+
+
   <script th:inline="javascript">
-    window.REST_API_KEY = /*[['${kakaoApiKey}']]*/ "";
+  window.REST_API_KEY = [[${kakaoApiKey}]];
     window.regionList = /*[[${regionList}]]*/ [];
     console.log("🟢 JS regionList 확인:", window.regionList);
   </script>
