@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +25,11 @@ import com.trip.constant.Member.Status;
 import com.trip.repository.Member.CustomerServiceRepository;
 import com.trip.service.admin.CustomerServiceAnswerService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class CsMgmtController {
 	
 	@Autowired
@@ -33,6 +37,8 @@ public class CsMgmtController {
 	
 	@Autowired
 	private CustomerServiceAnswerService customerServiceAnswerService;
+	
+	private final SimpMessagingTemplate messagingTemplate;
 	
 	
 	@GetMapping("/csMgmt")
@@ -70,11 +76,13 @@ public class CsMgmtController {
 								@RequestParam(value = "answerText", required = false) String answerText,
 								@RequestParam("csId") Long csId) {
 		if ("IN_PROGRESS".equals(status)) {
-		    // 답변 없이 상태만 업데이트
 			customerServiceAnswerService.updateStatus(csId, Status.IN_PROGRESS);
 		} else {
 		    customerServiceAnswerService.saveAnswer(csId, status, answerText);
+		    String notificationMessage = "고객문의에 답변이 달렸습니다.";
+		    messagingTemplate.convertAndSend("/topic/comments", notificationMessage);
 		}
+		
 		
 		return "redirect:/admin/csMgmt";
 	}
