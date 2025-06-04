@@ -1,5 +1,6 @@
 package com.trip.service.admin;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import com.trip.entity.Member.WebNotificationEntity;
 import com.trip.repository.Member.CustomerServiceAnswerRepository;
 import com.trip.repository.Member.CustomerServiceRepository;
 import com.trip.repository.Member.WebNotificationRepository;
+import com.trip.websocket.CustomWebSocketHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +26,7 @@ public class CustomerServiceAnswerService {
     private final CustomerServiceRepository customerServiceRepository;
     private final CustomerServiceAnswerRepository answerRepository;
     private final WebNotificationRepository webNotificationRepository;
+    private final CustomWebSocketHandler customWebSocketHandler;
 
     @Transactional
     public void saveAnswer(Long csId, String status, String answerText) {
@@ -61,6 +64,12 @@ public class CustomerServiceAnswerService {
                 .build();
 
         webNotificationRepository.save(notification);
+        
+        try {
+        	customWebSocketHandler.sendNotification(userId, "문의에 대한 답변이 도착했습니다.");
+        } catch(IOException e) {
+        	e.printStackTrace();
+        }
 
 
     }

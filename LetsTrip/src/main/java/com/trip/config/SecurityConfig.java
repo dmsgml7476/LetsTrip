@@ -11,6 +11,8 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.trip.config.auth.CustomUserDetails;
+
 import jakarta.servlet.http.HttpSession;
 
 @Configuration
@@ -24,6 +26,7 @@ public class SecurityConfig {
 	            .authorizeHttpRequests(auth -> auth
 	            	.requestMatchers("/admin/**").hasRole("ADMIN")
 	            	.requestMatchers("/mypage/**").authenticated()
+	            	.requestMatchers("/ws/**").permitAll()
 	                .anyRequest().permitAll()  
 	                
 
@@ -34,7 +37,10 @@ public class SecurityConfig {
 		        			.successHandler((request, response, authentication) -> {
 		        				HttpSession session = request.getSession(false);
 		        				if (session != null) {
-		        			        String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
+		        					CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		        			        session.setAttribute("userId", userDetails.getUser().getId());
+		        					
+		        					String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
 		        			        if (redirectUrl != null) {
 		        			            session.removeAttribute("redirectAfterLogin");
 		        			            response.sendRedirect(redirectUrl);
